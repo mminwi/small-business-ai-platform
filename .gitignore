@@ -1,0 +1,42 @@
+# Windows
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# Mac
+.DS_Store
+.AppleDouble
+
+# Office temp files (open document locks)
+~$*
+*.tmp
+
+# API keys and secrets — NEVER commit these
+.env
+*.env
+secrets.json
+credentials.json
+*_credentials.json
+*_secret*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+.npm
+
+# Logs
+*.log
+logs/
+
+# VS Code
+.vscode/
+
+# Claude Code internal
+.claude/
