@@ -13,6 +13,26 @@ Claude (Anthropic API) is the AI backbone. All business logic lives in markdown 
 **Author:** Mike Maier — Director of Mechanical Engineering, Credo Product Development
 **GitHub:** https://github.com/mminwi/small-business-ai-platform
 
+## Core Mission — The AI Back-Office Person
+
+**The platform replaces the back-office employee a small business cannot afford to hire.**
+
+A 5-person plumbing company shouldn't need a $45,000/year bookkeeper to operate QuickBooks, chase invoices, manage scheduling, and handle paperwork. The AI does that job instead.
+
+The owner runs the trade. The AI runs the office.
+
+QuickBooks is still the accounting system — but the AI is the operator of QuickBooks. The customer should rarely if ever need to open QB directly. The AI:
+- Converts completed jobs into QB invoices automatically
+- Pushes estimates to QB for customer approval
+- Creates new QB customer records when CRM wins a deal
+- Monitors AR and drafts payment follow-up emails
+- Reconciles job costs vs. actuals
+- Pulls hours from work orders into QB Time / payroll
+- Captures vendor bills and pushes to QB AP
+- Generates plain-English weekly/monthly summaries for the owner
+
+**Design rule:** If a back-office person would normally do it by opening QuickBooks or a spreadsheet, the AI should do it instead — automatically or with one confirmation step from the owner.
+
 ---
 
 ## Git — Save Your Work
