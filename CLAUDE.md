@@ -61,6 +61,13 @@ Credentials: stored in Windows Credential Manager (username: mminwi, token-based
 5. **Accounting:** QuickBooks Online via API (customer-supplied)
 6. **Minimum viable per tier** — scale features to what each customer tier actually needs
 
+## Resolved Architecture Decisions
+
+- **API costs:** Customer supplies their own Anthropic API key and pays usage directly. No ongoing software subscription.
+- **Runtime:** AI agents run from markdown prompt files and JSON data files installed in the customer's workspace. Minimize hard-coded logic — still determining what absolutely must be hard-coded (treat as an open design question per module).
+- **Data storage:** JSON files in the customer's workspace (Google Drive or SharePoint folder structure)
+- **Business logic storage:** Markdown files in the customer's workspace, read by Claude at runtime
+
 ---
 
 ## Pricing Tiers
@@ -73,11 +80,19 @@ Credentials: stored in Windows Credential Manager (username: mminwi, token-based
 
 ---
 
-## Open Questions (Resolve Before Building)
+## Build Priority Order
 
-- [ ] **API cost model:** Who pays for ongoing Claude API usage? Customer's own key, or subscription?
-- [ ] **Hosting/runtime:** What actually runs the code? Google Apps Script, Cloud Run, hosted server?
+1. **Project Tracking** (Module 02) — first module to build end-to-end
+2. **Estimating** (part of Module 04 — Invoicing & Estimates)
+3. **Invoicing** (Module 04 — QuickBooks integration)
+4. Then expand from there based on what the first customers need
+
+## Open Questions / Research Tasks
+
 - [ ] **Tier scoping:** Each spec needs a section marking which features apply at Tier 1 vs 2 vs 3
+- [ ] **Hard-coded minimum:** Identify per module what absolutely must be code vs. what can be markdown-driven
+- [ ] **SAP/commercial gap analysis:** Compare module list against SAP Business One, QuickBooks, Jobber, etc. to catch anything obvious we're missing
+- [ ] **Human Resources module:** Evaluate whether a basic HR module (employee records, time tracking, onboarding) should be added — not currently in the 20-module list
 
 ---
 
