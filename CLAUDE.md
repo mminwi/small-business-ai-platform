@@ -177,12 +177,39 @@ This also means the platform can never hold data hostage. The customer owns thei
 
 ---
 
+## First Customer — Credo Product Development Inc.
+
+**www.credopd.com** — Engineering product development firm. Mike's company. First test bed.
+
+**Team (12 people):**
+- 3 mechanical engineers
+- 2 electrical engineers
+- 3 industrial designers
+- 1 prototype technician
+- 1 firmware/software engineer (potential technical resource for backend setup)
+- 2 business development
+- 1 person feeding QuickBooks + doing HR ← the role the AI replaces
+
+**Credo's business model:** Engineering services firm — bills clients for hours + expenses on projects. BD generates proposals; engineers execute; QB person manually handles invoicing, time entry, and HR admin.
+
+**Immediate pain points the platform solves for Credo:**
+- Engineers log time → QB person manually enters into QuickBooks → AI does this instead
+- BD team creates estimates/proposals manually → AI generates from project templates
+- QB person manually creates client invoices → AI auto-invoices from project time logs
+- HR admin overhead → AI handles scheduling, reminders, basic record-keeping
+
+**Why Credo is a better test bed than a plumber:** More complex (12 people, multiple project types, professional services billing, BD pipeline). If it works here it works anywhere simpler.
+
 ## Build Priority Order
 
-1. **Project Tracking** (Module 02) — first module to build end-to-end
-2. **Estimating** (part of Module 04 — Invoicing & Estimates)
-3. **Invoicing** (Module 04 — QuickBooks integration)
-4. Then expand from there based on what the first customers need
+Build order is driven by Credo's actual pain points first:
+
+1. **Project Tracking** (Module 02) — engineers log time against client projects
+2. **Estimating** (Module 04) — BD generates proposals and quotes
+3. **Invoicing → QuickBooks** (Module 04) — auto-invoice from project time logs; eliminate manual QB entry
+4. **CRM** (Module 01) — BD manages client pipeline
+5. **Document Control** (Module 10) — engineering drawings, client specs, controlled documents
+6. Then expand based on what Credo and early customers need
 
 ## Open Questions / Research Tasks
 
