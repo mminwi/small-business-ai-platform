@@ -67,6 +67,46 @@ Credentials: stored in Windows Credential Manager (username: mminwi, token-based
 - **Runtime:** AI agents run from markdown prompt files and JSON data files installed in the customer's workspace. Minimize hard-coded logic — still determining what absolutely must be hard-coded (treat as an open design question per module).
 - **Data storage:** JSON files in the customer's workspace (Google Drive or SharePoint folder structure)
 - **Business logic storage:** Markdown files in the customer's workspace, read by Claude at runtime
+- **QuickBooks-first rule:** QuickBooks Online is the customer's accounting system. Anything QB already does well should be left to QB and supplemented only where needed — do NOT rebuild what QB provides. Our platform handles operational data QB never sees.
+
+## What QuickBooks Handles (Don't Rebuild)
+
+Customers already have QB. Integrate with it — don't duplicate it.
+
+| QB Feature | Our Role |
+|-----------|----------|
+| Invoicing & estimates | Push/pull via API only |
+| Payroll (QB Payroll / Gusto) | Point customers to it; document integration |
+| Time tracking (QuickBooks Time) | Point customers to it; pull hours into job costing |
+| Purchase orders | QB handles; we may surface PO status in work orders |
+| Financial reporting & dashboards | QB handles; we supplement with operational data |
+| Customer records (basic) | QB is secondary; CRM is our master |
+| Recurring billing | QB handles |
+| Expense tracking | QB handles |
+
+## What We Build (QB Doesn't Cover This)
+
+| Our Module | Why QB Doesn't Cover It |
+|-----------|------------------------|
+| CRM (leads, pipeline, interaction history) | QB has basic customer records, not sales pipeline |
+| Scheduling & Dispatch | QB has no job scheduling concept |
+| Work Orders & Job Tracking | QB sees the invoice, not job execution |
+| Project Management | QB job costing is basic, not project tracking |
+| Inventory / BOM / MRP (manufacturer level) | QB inventory too simple for manufacturers |
+| ISO 9001 / CAPA / Document Control | QB has nothing here |
+| Gov / ITAR / SAM.gov | QB has nothing here |
+| Asset & Equipment Management | QB has no equipment tracking |
+| Online booking (inbound) | QB doesn't do customer-facing booking |
+| AI orchestration layer | The core differentiator |
+| Operational dashboards | Jobs, scheduling, quality status — not in QB |
+| Thin HR / employee + certification records | For ISO/ITAR compliance only; payroll stays in QB |
+
+## Out of Scope (Standalone Tools Handle It)
+
+- **Payroll** → QuickBooks Payroll or Gusto
+- **Email marketing / campaigns** → Mailchimp, HubSpot, etc.
+- **E-commerce / online store** → Shopify, WooCommerce
+- **Full HR suite** → BambooHR, Gusto, Rippling
 
 ---
 
@@ -91,8 +131,10 @@ Credentials: stored in Windows Credential Manager (username: mminwi, token-based
 
 - [ ] **Tier scoping:** Each spec needs a section marking which features apply at Tier 1 vs 2 vs 3
 - [ ] **Hard-coded minimum:** Identify per module what absolutely must be code vs. what can be markdown-driven
-- [ ] **SAP/commercial gap analysis:** Compare module list against SAP Business One, QuickBooks, Jobber, etc. to catch anything obvious we're missing
-- [ ] **Human Resources module:** Evaluate whether a basic HR module (employee records, time tracking, onboarding) should be added — not currently in the 20-module list
+- [x] **SAP/commercial gap analysis:** Complete — see `specs/gap.md`
+- [ ] **Asset & Equipment Management:** Add as new module (gap identified; QB doesn't cover it)
+- [ ] **Operational dashboards:** Add as new module — AI-generated summaries of jobs, scheduling, quality (financial dashboards stay in QB)
+- [ ] **Thin HR / employee records:** Determine scope — certifications, training records for ISO/ITAR only; keep minimal
 
 ---
 
