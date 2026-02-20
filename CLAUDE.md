@@ -81,13 +81,26 @@ Credentials: stored in Windows Credential Manager (username: mminwi, token-based
 5. **Accounting:** QuickBooks Online via API (customer-supplied)
 6. **Minimum viable per tier** — scale features to what each customer tier actually needs
 
+## Business Model Clarification
+
+- **The framework is open source** — procedures, schemas, agent designs, and prompt templates are published publicly on GitHub. Any capable LLM can use the framework to self-configure a basic system.
+- **The service business** is for customers who are not technical enough to implement it themselves, or complex enough to need hands-on help.
+- **Revenue comes from implementation services**, not software licenses.
+- **Publishing the knowledge builds trust** — it validates the framework and positions Mike as the domain expert.
+
 ## Resolved Architecture Decisions
 
 - **API costs:** Customer supplies their own Anthropic API key and pays usage directly. No ongoing software subscription.
-- **Runtime:** AI agents run from markdown prompt files and JSON data files installed in the customer's workspace. Minimize hard-coded logic — still determining what absolutely must be hard-coded (treat as an open design question per module).
-- **Data storage:** JSON files in the customer's workspace (Google Drive or SharePoint folder structure)
-- **Business logic storage:** Markdown files in the customer's workspace, read by Claude at runtime
-- **QuickBooks-first rule:** QuickBooks Online is the customer's accounting system. Anything QB already does well should be left to QB and supplemented only where needed — do NOT rebuild what QB provides. Our platform handles operational data QB never sees.
+- **Business logic:** Markdown procedure files — the AI's "how-to manual." Stored in customer's workspace and readable/editable by the customer.
+- **Data (customer-visible):** JSON files in Google Drive or SharePoint — customers can see and edit their data directly.
+- **Data (operational):** Thin backend database (e.g., Firestore or Postgres on Cloud Run) indexes and caches the JSON data for fast queries. JSON files are the source of truth; DB is a performance layer.
+- **QuickBooks-first rule:** QB is the accounting system. AI operates QB on the owner's behalf. Don't rebuild what QB provides.
+- **Minimum hard-coded infrastructure** (cannot be eliminated — see specs/21):
+  - OAuth handler for Google + QuickBooks authentication
+  - Tool executor: validates parameters, calls APIs, retries on failure
+  - Lightweight indexed database for fast operational queries
+  - Background scheduler for proactive tasks (overdue invoice reminders, daily summaries)
+  - Audit log: every AI action recorded with timestamp, inputs, outputs
 
 ## What QuickBooks Handles (Don't Rebuild)
 
