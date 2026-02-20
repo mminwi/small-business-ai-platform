@@ -134,6 +134,30 @@ Customers already have QB. Integrate with it — don't duplicate it.
 | Operational dashboards | Jobs, scheduling, quality status — not in QB |
 | Thin HR / employee + certification records | For ISO/ITAR compliance only; payroll stays in QB |
 
+## Data Safety & Owner Trust — Non-Negotiable Design Principle
+
+Small business owners fear losing access to their data if a system goes down or a vendor disappears.
+
+**Design rule: Critical business data is always readable without the platform running.**
+
+The background scheduler exports key data to the customer's Google Drive automatically:
+
+| Export | Format | Frequency |
+|--------|--------|-----------|
+| Customer list | PDF + CSV | Nightly |
+| Vendor / supplier list | PDF + CSV | Nightly |
+| Open jobs / work orders | PDF | Nightly |
+| Open invoices (AR — who owes money) | PDF | Nightly |
+| Inventory snapshot | PDF + CSV | Weekly |
+| Employee / contractor list | PDF | Weekly |
+
+- **PDF** — human-readable without any software, printable, shareable with accountant
+- **CSV** — importable into Excel or any other system; data portability if they ever leave
+
+**Selling point:** *"Your customer list, open jobs, and invoices are saved to your Google Drive every night. If anything goes wrong — internet down, we go out of business, anything — you open Google Drive and everything is right there."*
+
+This also means the platform can never hold data hostage. The customer owns their data, always.
+
 ## Out of Scope (Standalone Tools Handle It)
 
 - **Payroll** → QuickBooks Payroll or Gusto
