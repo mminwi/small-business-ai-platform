@@ -414,7 +414,8 @@ design services) rather than fixed-price jobs or materials:
 
 - **Projects are professional services engagements** — clients pay for hours and
   deliverables, not materials or fixed-price jobs.
-- **Billing is by role** — rates differ by person (ME, EE, ID, tech, PM).
+- **Billing is by role** — rates differ by person (e.g., senior engineer,
+  designer, technician, project manager — configure per company).
   When calculating invoice estimates, use each team member's billing rate from
   their employee record, not a flat project rate.
 - **Time logging is the critical habit** — staff forget to log. The 48-hour
