@@ -1,0 +1,234 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Canonical opportunity/proposal package schema. Source: ChatGPT research 2026-02-21, adapted for Credo PD. Every field with source_ref must cite a sources[] entry. QC blocks export if required fields are empty.",
+
+  "opportunity_id": "OPP-2026-001",
+  "status": "intake",
+  "$status_values": ["intake", "triage", "estimating", "drafting", "qc", "submitted", "won", "lost", "no_bid"],
+
+  "meta": {
+    "created_at": "",
+    "created_by": "",
+    "last_updated_at": "",
+    "version": "1.0",
+    "workflow_templates_selected": []
+  },
+
+  "customer": {
+    "organization": "",
+    "type": "prime | agency | commercial",
+    "contacts": [
+      { "name": "", "email": "", "phone": "", "role": "PM | Contracts | Engineer | BD" }
+    ],
+    "address": "",
+    "existing_relationship": "new | repeat | preferred",
+    "security_notes": ""
+  },
+
+  "govcon": {
+    "applicable": false,
+    "$comment": "Set applicable=true for any government or prime subcontract work",
+    "prime_or_sub": "prime | subcontractor | unknown",
+    "vehicle": "IDIQ | OTA | GSA | SBIR | open_market | other | unknown",
+    "solicitation_id": "",
+    "due_date": "",
+    "submission_method": "email | portal | hand_delivery | other",
+    "naics": "",
+    "uei": "",
+    "$uei_note": "UEI replaced DUNS on SAM.gov as of April 4 2022. No DUNS references.",
+    "set_aside": "none | small_business | SDVOSB | HUBZone | WOSB | 8a | unknown",
+    "flowdowns_expected": true,
+    "flowdowns_received": false,
+    "flowdown_notes": ""
+  },
+
+  "compliance": {
+    "cui": {
+      "present": "yes | no | unknown",
+      "notes": "",
+      "source_ref": ""
+    },
+    "itar": {
+      "present": "yes | no | unknown",
+      "notes": "",
+      "$itar_note": "If yes or unknown, flag for review before any work begins or files are shared"
+    },
+    "ear": {
+      "present": "yes | no | unknown",
+      "notes": ""
+    },
+    "dfars_flags": [
+      {
+        "clause": "252.204-7012",
+        "applicable": "yes | no | unknown",
+        "notes": "",
+        "$note": "252.204-7012 = cybersecurity obligations + incident reporting. Required awareness for any DoD work."
+      }
+    ],
+    "cmmc_level_target": "none | level1 | level2 | unknown",
+    "$cmmc_note": "CMMC phased rollout began November 10 2025. Level 2 requires C3PAO assessment.",
+    "nist_800_171_required": "yes | no | unknown",
+    "$nist_note": "Current version is Rev. 3 (not Rev. 2). Confirm which revision customer requires.",
+    "onsite": {
+      "required": "yes | no | unknown",
+      "location": "",
+      "badging_required": false,
+      "badging_lead_time_weeks": 0
+    },
+    "clearance": {
+      "required": "yes | no | unknown",
+      "level": "none | confidential | secret | top_secret | unknown"
+    },
+    "over_claim_check": "$REQUIRED: Review all 'shall', 'will', 'complies with', 'certified' statements before export"
+  },
+
+  "scope": {
+    "title": "",
+    "problem_statement": "",
+    "background": "",
+    "requirements": [
+      {
+        "id": "R1",
+        "text": "",
+        "priority": "shall | should | may",
+        "source_ref": "SRC-001",
+        "response_location": ""
+      }
+    ],
+    "deliverables_requested": [
+      {
+        "id": "D1",
+        "text": "",
+        "format": "",
+        "due": "",
+        "source_ref": "SRC-001"
+      }
+    ],
+    "constraints": [
+      {
+        "type": "schedule | cost | materials | compliance | interface | other",
+        "text": "",
+        "source_ref": "SRC-001"
+      }
+    ],
+    "out_of_scope_notes": []
+  },
+
+  "approach": {
+    "selected_workflow_templates": [
+      {
+        "template_id": "WF-01",
+        "why": "",
+        "confidence": 0.8,
+        "hour_adjustments": [
+          { "role": "ME", "direction": "up | down", "amount_hours": 0, "rationale": "" }
+        ]
+      }
+    ],
+    "assumptions": [
+      {
+        "id": "A1",
+        "text": "",
+        "category": "inputs | schedule | access | test | vendor | ip | compliance",
+        "source_ref": ""
+      }
+    ],
+    "exclusions": [
+      { "id": "E1", "text": "" }
+    ],
+    "risks": [
+      {
+        "id": "RK1",
+        "text": "",
+        "probability": 1,
+        "impact": 1,
+        "$scale": "1=low 5=high",
+        "mitigation": "",
+        "owner": ""
+      }
+    ]
+  },
+
+  "wbs": {
+    "phases": [
+      {
+        "phase_id": "P1",
+        "name": "",
+        "template_source": "WF-01",
+        "tasks": [
+          {
+            "task_id": "T1",
+            "text": "",
+            "deliverables": ["D1"],
+            "acceptance_criteria": "",
+            "dependencies": [],
+            "estimate": {
+              "hours": { "PM": 0, "ME": 0, "EE": 0, "ID": 0, "SW": 0, "TECH": 0 },
+              "odc_usd": 0,
+              "odc_notes": ""
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  "estimate_summary": {
+    "rateset_id": "2026-STD",
+    "$rateset_note": "Rate sets stored in schemas/ratesets.json. Never hardcode rates in this file.",
+    "totals": {
+      "hours": { "PM": 0, "ME": 0, "EE": 0, "ID": 0, "SW": 0, "TECH": 0, "total": 0 },
+      "labor_usd": 0,
+      "odc_usd": 0,
+      "travel_usd": 0,
+      "total_usd": 0
+    },
+    "schedule_text": "",
+    "period_of_performance": { "weeks": 0, "basis": "ARO | calendar | TBD" },
+    "pricing_assumptions": [],
+    "excel_artifact_path": "",
+    "$excel_note": "Excel workbook is the pricing source of truth. This JSON summarizes it — does not replace it."
+  },
+
+  "proposal_output": {
+    "template_id": "",
+    "sections": {
+      "executive_summary": "",
+      "technical_approach": "",
+      "management_plan": "",
+      "deliverables": "",
+      "assumptions_exclusions": "",
+      "pricing_narrative": "",
+      "compliance_matrix": ""
+    },
+    "generated_files": []
+  },
+
+  "sources": [
+    {
+      "source_id": "SRC-001",
+      "type": "email | pdf | docx | link | meeting_notes | drawing",
+      "title": "",
+      "path_or_url": "",
+      "received_date": "",
+      "hash": ""
+    }
+  ],
+
+  "review": {
+    "qc_passed": false,
+    "qc_findings": [
+      {
+        "rule": "",
+        "severity": "blocker | warning | info",
+        "detail": "",
+        "resolved": false
+      }
+    ],
+    "approvals": [
+      { "role": "PM", "name": "", "approved": false, "timestamp": "" },
+      { "role": "TechLead", "name": "", "approved": false, "timestamp": "" }
+    ],
+    "$approval_note": "No proposal exports until qc_passed=true and all approvals complete"
+  }
+}

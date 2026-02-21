@@ -200,25 +200,60 @@ This also means the platform can never hold data hostage. The customer owns thei
 
 **Why Credo is a better test bed than a plumber:** More complex (12 people, multiple project types, professional services billing, BD pipeline). If it works here it works anywhere simpler.
 
-## Build Priority Order
+## Credo Module List (Finalized 2026-02-21)
 
-Build order is driven by Credo's actual pain points first:
+Credo is an engineering services firm — not a trade contractor. Modules are
+selected for that context. Modules not listed are not needed for Credo.
 
-1. **Project Tracking** (Module 02) — engineers log time against client projects
-2. **Estimating** (Module 04) — BD generates proposals and quotes
-3. **Invoicing → QuickBooks** (Module 04) — auto-invoice from project time logs; eliminate manual QB entry
-4. **CRM** (Module 01) — BD manages client pipeline
-5. **Document Control** (Module 10) — engineering drawings, client specs, controlled documents
-6. Then expand based on what Credo and early customers need
+**Build in this order:**
+
+| Priority | Module | Why |
+|----------|--------|-----|
+| 1 | Project Management | Core ops — done: `procedures/pm/pm-core.md` |
+| 2 | Estimating + Proposals | Highest BD impact; Workflow Library approach |
+| 3 | ISO 9001 + Document Control + CAPA | Certification pursuit — build as one sprint |
+| 4 | SAM.gov + ITAR + Gov Contract Tracking | Active BD — drumming up defense work |
+| 5 | BD Content & Defense Marketing | LinkedIn + capability statements + SAM narrative |
+| 6 | Invoicing | Comes after PM + estimating are working |
+| — | QB API Integration | 18+ months out; write procedures now, wire API later |
+
+**Not needed for Credo:** CRM (have one), Scheduling/Dispatch, Inventory,
+Work Orders, Supplier/Vendor, BOM, Help Desk, Website Generation, Customer Chat.
+
+## Architecture Decisions (Validated 2026-02-21)
+
+Research confirmed the platform architecture is correct. External analysis
+(ChatGPT research, GPT store survey) concluded:
+
+> "Hybrid wins: Local Knowledge Base + Multi-agent Pipeline, with a Custom GPT as UI."
+
+That is exactly what we are building.
+
+**Estimating module design rule — Workflow Library:**
+The AI never guesses hours. It selects a phase pattern from a library of
+10-20 reusable templates, then proposes adjustments with explicit rationale.
+No freeform pricing. See `research/competitive-landscape-2026-02.md`.
+
+**Credo workflow patterns (to be detailed in estimating procedure file):**
+Discovery, Concept, Detailed Design (ME/EE/ID), Firmware/SW, Prototype Build,
+V&V, DFM/Tech Data Package, Program Management, SBIR/GovCon Proposal.
+
+## GovCon Compliance — Current Facts (as of 2026-02-21)
+
+These go into the SAM.gov/GovCon procedure file. They are current:
+- **CMMC rollout began November 10, 2025** — active now
+- **NIST SP 800-171 Rev. 3** is current (not Rev. 2)
+- **UEI replaced DUNS** on SAM.gov — April 4, 2022
+- **DFARS 252.204-7012** — required cybersecurity clause for any DoD work
 
 ## Open Questions / Research Tasks
 
 - [ ] **Tier scoping:** Each spec needs a section marking which features apply at Tier 1 vs 2 vs 3
 - [ ] **Hard-coded minimum:** Identify per module what absolutely must be code vs. what can be markdown-driven
 - [x] **SAP/commercial gap analysis:** Complete — see `specs/gap.md`
-- [ ] **Asset & Equipment Management:** Add as new module (gap identified; QB doesn't cover it)
-- [ ] **Operational dashboards:** Add as new module — AI-generated summaries of jobs, scheduling, quality (financial dashboards stay in QB)
-- [ ] **Thin HR / employee records:** Determine scope — certifications, training records for ISO/ITAR only; keep minimal
+- [ ] **Workflow Library:** Detail hour bands by role for each Credo phase pattern (needs historical data from Mike)
+- [ ] **Pending research:** Perplexity + Gemini prompts not yet returned — see `research/competitive-landscape-2026-02.md`
+- [ ] **ChatGPT follow-up:** Ask for workflow templates, data schema v1, QC rules (prompt drafted in research doc)
 
 ---
 
