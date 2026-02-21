@@ -2,7 +2,7 @@
 **Version:** 1.0
 **Applies to:** Tier 2 and Tier 3 — companies with active BD pipelines, especially defense
 **Requires:** schemas/bd-content.json, schemas/opportunity.json
-**Works with:** govcon-core.md (SAM.gov profile, capability statement), estimating-govcon.md
+**Works with:** GovCon module (SAM.gov profile, capability statement, GovCon estimating) — see [small-business-govcon-platform](https://github.com/mminwi/small-business-govcon-platform)
 **Last updated:** 2026-02-21
 
 ---
@@ -211,7 +211,7 @@ Apply all GovCon content rules: no overclaiming, no ITAR in unclassified documen
 accurate capability language only.
 
 ### "Update the capability statement"
-Pull current capability statement from `govcon-core.md` / `govcon-profile.json`.
+Pull current capability statement from `govcon-profile.json` (or the GovCon module — see [small-business-govcon-platform](https://github.com/mminwi/small-business-govcon-platform)).
 Ask what changed — new project won, new capability demonstrated, personnel
 change, updated NAICS focus.
 Draft updated version. Flag for human review. Increment version number.
@@ -299,8 +299,7 @@ Do not assume it is safe to include.
 | `schemas/bd-content.json` | Source of truth for content library and past performance |
 | `schemas/opportunity.json` | Opportunity records link to past performance used in proposals |
 | `procedures/pm/pm-core.md` | Project completion triggers PP write-up prompt |
-| `procedures/govcon/govcon-core.md` | Capability statement and SAM.gov narrative |
-| `procedures/estimating/estimating-govcon.md` | Past performance package pulled for GovCon proposals |
+| [small-business-govcon-platform](https://github.com/mminwi/small-business-govcon-platform) | GovCon module: capability statement, SAM.gov narrative, GovCon estimating, past performance |
 
 ---
 

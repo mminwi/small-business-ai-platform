@@ -132,6 +132,16 @@ Useful feedback:
 
 ---
 
+## Government Contracting
+
+This repo covers commercial and service businesses. If your business pursues
+government contracts — SAM.gov, SBIR, RFPs, ITAR, CMMC — that's a separate,
+more complex system. Reach out directly if you want to talk through it:
+
+**Mike Maier** — [github.com/mminwi](https://github.com/mminwi)
+
+---
+
 ## License
 
 MIT. Use it, modify it, build on it. See [LICENSE](LICENSE).

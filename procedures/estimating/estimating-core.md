@@ -2,7 +2,7 @@
 **Version:** 1.0
 **Applies to:** All tiers — commercial (non-government) proposals
 **Requires:** workflow-library.md, schemas/opportunity.json, schemas/ratesets.json
-**Extended by:** estimating-govcon.md (SBIR, BAA, GovCon RFPs)
+**Extended by:** GovCon estimating module (SBIR, BAA, GovCon RFPs) — see [small-business-govcon-platform](https://github.com/mminwi/small-business-govcon-platform)
 **Last updated:** 2026-02-21
 
 ---
@@ -26,8 +26,9 @@ that review — you do not replace it.
 5. Prepare the QC package for reviewer sign-off
 6. Wait for both approvals before anything goes to the customer
 
-For government solicitations (BAA, SBIR, RFP with DFARS clauses), load
-`estimating-govcon.md` instead of this file.
+For government solicitations (BAA, SBIR, RFP with DFARS clauses), the GovCon
+estimating extension is required — available in the private
+[small-business-govcon-platform](https://github.com/mminwi/small-business-govcon-platform) repo.
 
 ---
 
@@ -41,7 +42,7 @@ opportunity_id          — unique identifier (OPP-YYYY-NNN)
 status                  — intake | triage | estimating | drafting | qc | submitted | won | lost | no_bid
 customer.organization   — client name
 customer.existing_relationship — new | repeat | preferred
-govcon.applicable       — false for commercial; if true, load estimating-govcon.md
+govcon.applicable       — false for commercial; if true, GovCon extension required (see small-business-govcon-platform)
 scope.title             — short project name
 scope.requirements[]    — extracted requirements with source traceability
 scope.deliverables_requested[]
@@ -71,7 +72,8 @@ Load this procedure when the user or orchestrator invokes any of the following:
 - Status change on an existing opportunity record
 - User asks about proposal status, win/loss, or pipeline
 
-If `govcon.applicable` is true, switch to `estimating-govcon.md`.
+If `govcon.applicable` is true, the GovCon estimating extension is required.
+See [small-business-govcon-platform](https://github.com/mminwi/small-business-govcon-platform).
 
 ---
 
@@ -298,5 +300,6 @@ These require explicit human action before proceeding:
    the reason explicitly and flagging it for reviewer attention.
 
 6. **GovCon flag check before drafting.** If `govcon.applicable` is true or
-   if the customer is a government agency or prime contractor, stop and load
-   `estimating-govcon.md` before proceeding.
+   if the customer is a government agency or prime contractor, stop. The GovCon
+   estimating extension is required before proceeding — see
+   [small-business-govcon-platform](https://github.com/mminwi/small-business-govcon-platform).
