@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Quality management system records — document register, training, NCRs, suppliers, management review. Source: ISO 9001:2015 minimum requirements adapted for small business.",
+
+  "documents": [
+    {
+      "doc_id": "QM-001",
+      "$doc_id_prefixes": "QM=quality manual/policy, QP=quality procedure, WI=work instruction, QF=form/template, SPC=supplier qualification",
+      "title": "",
+      "type": "quality_manual | quality_procedure | work_instruction | form | policy | drawing",
+      "revision": "A",
+      "status": "active | draft | obsolete",
+      "approved_by": "",
+      "approved_date": "",
+      "file_path": "",
+      "next_review_date": "",
+      "revision_history": [
+        { "revision": "A", "date": "", "changed_by": "", "summary": "" }
+      ]
+    }
+  ],
+
+  "training_records": [
+    {
+      "employee_id": "",
+      "name": "",
+      "role": "",
+      "qualifications": [
+        {
+          "task_or_doc": "",
+          "doc_id_ref": "",
+          "qualified_date": "",
+          "qualified_by": "",
+          "method": "on_the_job | classroom | self_study | observation",
+          "expiry_date": "",
+          "status": "current | expired | pending"
+        }
+      ]
+    }
+  ],
+
+  "ncrs": [
+    {
+      "ncr_id": "NCR-2026-001",
+      "date_opened": "",
+      "opened_by": "",
+      "description": "",
+      "product_or_process": "",
+      "quantity_affected": 0,
+      "lot_or_serial": "",
+      "disposition": "use_as_is | rework | scrap | return_to_vendor | pending",
+      "disposition_approved_by": "",
+      "root_cause": "",
+      "corrective_action": {
+        "description": "",
+        "assigned_to": "",
+        "due_date": "",
+        "completed_date": "",
+        "verified_by": "",
+        "verified_date": "",
+        "effective": "yes | no | pending"
+      },
+      "preventive_action": "",
+      "linked_supplier_id": "",
+      "status": "open | corrective_action_in_progress | pending_verification | closed",
+      "closed_date": ""
+    }
+  ],
+
+  "inspection_records": [
+    {
+      "inspection_id": "",
+      "date": "",
+      "inspector": "",
+      "product": "",
+      "lot_or_serial": "",
+      "revision_inspected": "",
+      "criteria_reference": "",
+      "result": "pass | fail",
+      "ncr_id": "",
+      "linked_project_id": "",
+      "notes": ""
+    }
+  ],
+
+  "suppliers": [
+    {
+      "supplier_id": "SPC-001",
+      "name": "",
+      "what_they_supply": "",
+      "qualification_status": "approved | conditional | not_approved | under_review",
+      "qualification_basis": "past_performance | certificate_review | audit | conditional",
+      "qualification_date": "",
+      "last_review_date": "",
+      "next_review_date": "",
+      "certificates_on_file": [],
+      "ncr_count_past_year": 0,
+      "notes": ""
+    }
+  ],
+
+  "management_reviews": [
+    {
+      "review_id": "MR-2026-01",
+      "date": "",
+      "attendees": [],
+      "topics_covered": [
+        "ncr_summary",
+        "supplier_performance",
+        "customer_feedback",
+        "document_control_status",
+        "training_status",
+        "quality_objectives"
+      ],
+      "action_items": [
+        { "description": "", "assigned_to": "", "due_date": "", "complete": false }
+      ],
+      "next_review_date": "",
+      "notes": ""
+    }
+  ]
+}

@@ -389,7 +389,7 @@ ODC = Other Direct Costs (materials, travel, lab fees — listed separately).
 - Meeting minutes and action log
 
 **Standard assumptions:** PM cadence defined up front (weekly meetings, format agreed)
-**Standard exclusions:** Customer-side PM scope; Credo PM is for Credo's work only
+**Standard exclusions:** Customer-side PM scope; this template covers the company's own PM work only
 
 ---
 
@@ -407,7 +407,7 @@ CMMC readiness gap notes
 
 ## WF-16: Onsite Integration Support (Optional)
 
-**Use when:** Credo engineer travels to customer site for integration, field trials, or customer demos
+**Use when:** A company engineer travels to customer site for integration, field trials, or customer demos
 
 **Note:** Travel is ODC (pass-through). This template covers engineering time only.
 Add travel + per diem + badging lead time as explicit line items.
@@ -424,7 +424,7 @@ When a new proposal comes in:
 2. Select the matching templates — most proposals use 2-5 templates in sequence
 3. For each selected template, note any reasons to adjust hours up or down:
    - **Adjust up:** First-of-kind work, ambiguous requirements, new customer, tight schedule
-   - **Adjust down:** Credo has done this before, requirements well-defined, customer provides inputs
+   - **Adjust down:** Company has done this type of work before, requirements well-defined, customer provides inputs
 4. Write the adjustment rationale explicitly — it goes into the proposal assumptions section
 5. Sum hours across all selected templates by role → feed into estimate summary
 

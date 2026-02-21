@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$comment": "Canonical opportunity/proposal package schema. Source: ChatGPT research 2026-02-21, adapted for Credo PD. Every field with source_ref must cite a sources[] entry. QC blocks export if required fields are empty.",
+  "$comment": "Canonical opportunity/proposal package schema. Source: ChatGPT research 2026-02-21. Every field with source_ref must cite a sources[] entry. QC blocks export if required fields are empty.",
 
   "opportunity_id": "OPP-2026-001",
   "status": "intake",

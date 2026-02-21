@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Company-level GovCon readiness profile. One record per company. Updated as registration and compliance status changes.",
+
+  "company": "[Company legal name]",
+  "last_updated": "",
+
+  "sam_gov": {
+    "uei": "",
+    "$uei_note": "UEI replaced DUNS on April 4, 2022. Never reference DUNS.",
+    "cage_code": "",
+    "registration_status": "active | expired | expiring_soon | unknown",
+    "registration_expiry": "",
+    "$expiry_note": "SAM.gov registration expires annually. AI alerts at 90 days and 30 days before expiry.",
+    "entity_name_legal": "",
+    "primary_naics": "",
+    "all_naics": [],
+    "size_standard_qualifies": {
+      "small_business": true,
+      "sdvosb": false,
+      "hubzone": false,
+      "wosb": false,
+      "eight_a": false
+    },
+    "points_of_contact": [
+      { "role": "Government Business POC", "name": "", "email": "", "phone": "" },
+      { "role": "Electronic Business POC", "name": "", "email": "", "phone": "" }
+    ],
+    "capability_narrative": "",
+    "$capability_note": "Plain-English description of what the company does. Used in SAM.gov profile and as source for capability statements.",
+    "capability_last_updated": ""
+  },
+
+  "itar": {
+    "training_completed": true,
+    "training_date": "",
+    "training_scope": "Awareness training — all staff. File security controls in place.",
+    "$posture_note": "Not DDTC registered. Practical compliance only. Never claim ITAR certification.",
+    "file_security_confirmed": true,
+    "file_security_location": "",
+    "file_security_last_reviewed": "",
+    "trained_personnel": [
+      { "name": "", "role": "", "date_trained": "" }
+    ],
+    "new_hire_trigger": "ITAR awareness training required before access to any export-controlled files or projects"
+  },
+
+  "capability_statement": {
+    "version": "",
+    "last_updated": "",
+    "file_path": "",
+    "core_competencies": [],
+    "differentiators": [],
+    "past_performance_highlights": [],
+    "naics_focus": [],
+    "certifications_accurate": []
+  },
+
+  "active_contracts": [],
+  "$active_contracts_note": "Each entry is a contract_id linking to a contract record. Populated on first award."
+}

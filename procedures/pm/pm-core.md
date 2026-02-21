@@ -407,22 +407,22 @@ If a project record is missing expected fields (e.g., no budget_hours set):
 
 ---
 
-## Credo PD — Specific Notes for First Deployment
+## Professional Services Firms — Deployment Notes
 
-Credo Product Development is the first customer. Their use case differs slightly
-from a trade contractor:
+For firms that bill clients for hours and deliverables (engineering, consulting,
+design services) rather than fixed-price jobs or materials:
 
 - **Projects are professional services engagements** — clients pay for hours and
   deliverables, not materials or fixed-price jobs.
-- **Billing is by engineer role** — rates differ by person (ME, EE, ID, tech).
+- **Billing is by role** — rates differ by person (ME, EE, ID, tech, PM).
   When calculating invoice estimates, use each team member's billing rate from
   their employee record, not a flat project rate.
-- **Time logging is the critical habit** — engineers forget to log. The 48-hour
+- **Time logging is the critical habit** — staff forget to log. The 48-hour
   reminder is essential and should be persistent but not annoying. Once per 2
   days maximum.
 - **BD team generates proposals** — the estimating module creates proposals;
   when a proposal is won, the project is created from the estimate. Link
   linked_estimate_id at project creation so invoice line items match the proposal.
-- **Project types at Credo:** client_deliverable (most common), internal_rd,
+- **Project types:** client_deliverable (most common), internal_rd,
   proposal_work (unbillable BD time). Track type in project record; only
   client_deliverable projects flow to invoicing automatically.

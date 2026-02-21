@@ -158,7 +158,7 @@ Run this on every new opportunity before committing to estimate labor.
 Present the user with a structured one-page assessment.
 
 **Fit:**
-- Is this work Credo has done before, or close enough to scope confidently?
+- Is this work the company has done before, or close enough to scope confidently?
 - Is the required capacity available in the current schedule?
 - Is there a realistic path to winning — existing relationship, referral, known
   competitive position?
@@ -167,8 +167,8 @@ Present the user with a structured one-page assessment.
 - Scope is vague, undefined, or shifting
 - Client is new and the opportunity arrived cold with no context
 - Timeline implied by the scope is unrealistic given current backlog
-- Work requires certifications, equipment, or clearances Credo does not have
-- A price ceiling has been hinted at that is below Credo's likely cost
+- Work requires certifications, equipment, or clearances the company does not have
+- A price ceiling has been hinted at that is below the company's likely cost
 
 **Output:** One of three recommendations:
 - **Bid** — proceed to workflow selection
@@ -192,7 +192,7 @@ After triage confirms bid, select templates from `workflow-library.md`.
 5. For each template, explicitly note any hour adjustments:
    - **Adjust up:** first-of-kind work, ambiguous requirements, new client,
      tight schedule, scope has grown in the past on similar work
-   - **Adjust down:** Credo has done this type of work before, requirements
+   - **Adjust down:** the company has done this type of work before, requirements
      are well-defined, client provides key inputs on time
 6. Present the selection and proposed hour table — do not proceed until user
    approves
@@ -213,9 +213,9 @@ template ID, rationale, and all adjustments.
 
 Every commercial proposal includes these sections in this order:
 
-1. **Project Understanding** — one paragraph restating what Credo understands
+1. **Project Understanding** — one paragraph restating what the company understands
    the customer needs; confirms shared understanding before quoting
-2. **Scope of Work** — what Credo will do, organized by phase; tied to
+2. **Scope of Work** — what the company will do, organized by phase; tied to
    selected WF templates
 3. **Assumptions** — what must be true for this estimate to hold; covers every
    gap or ambiguity in the scope
@@ -228,7 +228,7 @@ Every commercial proposal includes these sections in this order:
 8. **Total Investment** — labor + ODC total, clearly labeled
 9. **Schedule** — estimated duration in weeks and any critical dependencies
    (starts After Receipt of Order unless otherwise stated)
-10. **Payment Terms** — per Credo standard agreement or as negotiated
+10. **Payment Terms** — per the company standard agreement or as negotiated
 11. **Validity** — this estimate is valid for 30 days unless stated otherwise
 
 **Do not include** internal cost data, loaded rates, margin, or rateset IDs

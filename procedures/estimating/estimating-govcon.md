@@ -33,7 +33,7 @@ Know which type you are working with — each has different structure and rules.
 | BAA | Broad Agency Announcement — open solicitation | Less structured than RFP; innovation-driven |
 | RFP | Request for Proposal — competitive procurement | Must follow Section L exactly; Section M drives scoring |
 | RFQ | Request for Quote — usually simpler/lower dollar | May be sole-source or competitive |
-| Sub (flowdown) | Credo as subcontractor under a prime | Prime sends Statement of Work + flowdown clauses |
+| Sub (flowdown) | the company as subcontractor under a prime | Prime sends Statement of Work + flowdown clauses |
 
 Identify the type at intake. It determines everything downstream.
 
@@ -56,7 +56,7 @@ and any stated preferences. BAAs often reward novelty over completeness.
 
 ### 2. Confirm SAM.gov active registration
 Before committing any proposal effort, verify:
-- Credo's UEI is active in SAM.gov (UEI replaced DUNS on April 4, 2022)
+- the company's UEI is active in SAM.gov (UEI replaced DUNS on April 4, 2022)
 - CAGE code is active
 - Registration expiration date — if expiring within 90 days, flag to renew now
 - Size standard matches NAICS code on the solicitation
@@ -68,9 +68,9 @@ period of performance.** This is a disqualifying issue.
 Before any estimate or proposal work begins.
 
 ### 4. Identify prime vs. sub role
-- **Prime:** Credo submits directly to the government. Credo owns the relationship
+- **Prime:** the company submits directly to the government. the company owns the relationship
   and the deliverables.
-- **Subcontractor:** Credo performs work under a prime's contract. You need the
+- **Subcontractor:** the company performs work under a prime's contract. You need the
   prime's Statement of Work and their flowdown clauses before starting. Do not
   accept pricing obligations before reviewing the flowdowns.
 
@@ -94,7 +94,7 @@ past this step until the user has acknowledged the flags.
 
 **DFARS 252.204-7012:**
 - Is this any DoD work, including subcontracts?
-- If yes: note the cybersecurity clause. Credo must have a System Security Plan
+- If yes: note the cybersecurity clause. the company must have a System Security Plan
   and adequate security on any system storing covered defense information.
 - This is an awareness flag, not a blocker — but it must be documented.
 
@@ -110,11 +110,11 @@ past this step until the user has acknowledged the flags.
 
 **Clearance:**
 - Does the work require personnel clearances? If yes, note level and confirm
-  Credo has cleared personnel available. Do not commit to classified work without
+  the company has cleared personnel available. Do not commit to classified work without
   cleared personnel confirmed.
 
 **Onsite:**
-- Does work require Credo personnel at a government facility?
+- Does work require the company personnel at a government facility?
 - If yes: note location, badging lead time, and whether a security escort is needed.
 - Add `WF-16 (Onsite Integration Support)` to the estimate.
 
@@ -125,21 +125,21 @@ past this step until the user has acknowledged the flags.
 In addition to the commercial triage factors in `estimating-core.md`, assess:
 
 **Competitive position:**
-- Is Credo a known entity to this program office or agency?
-- Has Credo done prior work (Phase I → Phase II transition, prior contract)?
+- Is the company a known entity to this program office or agency?
+- Has the company done prior work (Phase I → Phase II transition, prior contract)?
 - Are there likely incumbents or preferred vendors? Is this wired?
 
 **Past performance:**
 - Does the solicitation require past performance references?
-- Does Credo have relevant, recent, rateable past performance to cite?
+- Does the company have relevant, recent, rateable past performance to cite?
 - SBIR: prior SBIR awards significantly improve win probability — note them.
 
 **Set-aside:**
 - What is the set-aside status? (Small Business, SDVOSB, HUBZone, etc.)
-- Does Credo qualify? Confirm against current SAM.gov registration.
+- Does the company qualify? Confirm against current SAM.gov registration.
 
 **Teaming:**
-- Does the scope require capabilities Credo does not have in-house?
+- Does the scope require capabilities the company does not have in-house?
 - Is a teaming arrangement needed? If yes, does a partner exist and is a
   teaming agreement required before submission?
 - STTR: research institution partner is mandatory — confirm before bidding.
@@ -147,7 +147,7 @@ In addition to the commercial triage factors in `estimating-core.md`, assess:
 **Budget ceiling:**
 - SBIR Phase I and II have published budget ceilings. Note them.
 - For RFPs: is there a funding constraint stated or implied? Flag if
-  Credo's likely cost exceeds it.
+  the company's likely cost exceeds it.
 
 ---
 
@@ -162,7 +162,7 @@ Typical Phase I structure (verify against specific solicitation):
 1. **Executive Summary** — usually 1 page; overview of innovation and potential
 2. **Identification and Significance of the Problem** — what problem, why it matters,
    why existing solutions fall short
-3. **Technical Approach** — how Credo will solve it; Phase I work plan with milestones
+3. **Technical Approach** — how the company will solve it; Phase I work plan with milestones
 4. **Innovation** — what is novel; why this is not incremental improvement
 5. **Phase I Technical Objectives** — specific, measurable objectives for Phase I
 6. **Phase II and Commercialization Strategy** — how Phase I leads to Phase II;
@@ -228,7 +228,7 @@ in the budget justification, not hidden in technical labor.
 In addition to the commercial QC checklist in `estimating-core.md`, run:
 
 - [ ] SAM.gov registration is active and not expiring before end of PoP
-- [ ] NAICS code on solicitation matches Credo's registered size standard
+- [ ] NAICS code on solicitation matches the company's registered size standard
 - [ ] Every Section L requirement has a response location (compliance matrix complete)
 - [ ] Page and word limits verified — count the actual document, not an estimate
 - [ ] No CUI or ITAR-controlled content in the submission unless the handling
@@ -273,10 +273,10 @@ All integration points from `estimating-core.md` apply, plus:
 3. **No ITAR-controlled technology described without export control review.**
    This applies even to unclassified proposals and even to domestic primes.
 
-4. **No overclaiming compliance.** Do not write "Credo complies with
-   NIST SP 800-171" or "Credo is CMMC Level 2 certified" unless the user
+4. **No overclaiming compliance.** Do not write "the company complies with
+   NIST SP 800-171" or "the company is CMMC Level 2 certified" unless the user
    has confirmed it with documentation. Write what is accurate:
-   "Credo has implemented controls aligned with NIST SP 800-171 Rev. 3
+   "the company has implemented controls aligned with NIST SP 800-171 Rev. 3
    and is pursuing CMMC Level 2 assessment." Flag every compliance claim
    for reviewer confirmation before it goes in the proposal.
 

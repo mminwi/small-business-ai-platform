@@ -4,6 +4,27 @@ This file is read automatically by Claude Code at the start of every session.
 
 ---
 
+## STANDING RULE — Generic Templates Only
+
+**All files in `/procedures/` and `/schemas/` are generic templates.**
+They must contain zero customer-specific content — no company names, no
+customer-specific compliance postures, no hardcoded rates or team sizes.
+
+Credo Product Development is the test bed and first customer. Credo context
+lives in CLAUDE.md (this file) and in MEMORY.md only. It is **never** written
+into procedure or schema files.
+
+When writing or editing any file in `/procedures/` or `/schemas/`:
+- Use "the company" — never a customer name
+- Use placeholders for any value a customer would configure (rates, names, addresses)
+- If customer-specific logic is needed, note it as a configuration point, not hardcode it
+
+This rule exists because the repo is public. A competitor, a future customer,
+or a random developer reading these files should see a clean, generic framework —
+not one company's internal setup.
+
+---
+
 ## Project Overview
 
 **"The Vending Machine"** — Turnkey AI-powered business software for small companies (1–20 employees).
