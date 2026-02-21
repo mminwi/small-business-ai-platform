@@ -220,6 +220,13 @@ selected for that context. Modules not listed are not needed for Credo.
 **Not needed for Credo:** CRM (have one), Scheduling/Dispatch, Inventory,
 Work Orders, Supplier/Vendor, BOM, Help Desk, Website Generation, Customer Chat.
 
+## Explaining the Platform to Non-Technical Customers
+
+- **What are procedure files?** "The AI's Employee Handbook — markdown documents that tell it exactly how to do its job. When your process changes, you edit a text file. No retraining, no DevOps."
+- **Why not fine-tuning?** Edit a text file instead of retraining. Cheaper, traceable, and the AI can cite exactly which rule it followed.
+- **Positioning:** "Linux for small-business AI operations." Open, editable, yours to keep.
+- **Defense BD positioning:** "The only AI BD assistant built for a 10-person defense engineering firm — not a watered-down version of a big-prime tool."
+
 ## Architecture Decisions (Validated 2026-02-21)
 
 Research confirmed the platform architecture is correct. External analysis

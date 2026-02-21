@@ -200,13 +200,239 @@ All four items received and saved. Key artifacts created:
 - File naming matches prime instructions
 - Version stamp + revision log included
 
+## Perplexity Prompt 1 — Completed 2026-02-21
+
+**Question:** Do open-source AI procedure files / GitHub repos exist for SMB operations?
+
+**Answer:** No mature SMB-focused playbook exists. Confirmed gap.
+
+**What does exist (reference only):**
+- `strands-agents/agent-sop` — Markdown SOPs with RFC 2119 language (MUST/SHOULD/MAY). Closest pattern to what we're building. Generic workflows, not domain-specific.
+- `turing-machines/mentals-ai` — Markdown agent configs; more about wiring than business logic.
+- `dontriskit/awesome-ai-system-prompts` — Curated system prompts in structured markdown. Useful design reference.
+- `thibaultyou/prompt-library` — `prompt.md` + `metadata.yml` per prompt; local-first, Git-tracked. Interesting structure pattern.
+- GitHub Copilot `*.instructions.md` pattern — Persistent markdown operating instructions for AI agents with validation gates. This is exactly our pattern.
+
+**Key finding:** Nobody has published "Estimating SOP.md" or "Invoicing Agent SOP.md" ready to use. We are building the first real library of this type for SMB operations.
+
+**Decision — adopt RFC 2119 language in procedure files:**
+Use MUST / MUST NOT / SHOULD / MAY in procedure files going forward.
+Makes instructions precise and auditable — important for GovCon and ISO contexts.
+Backfill into pm-core.md on next cleanup pass.
+
+Example:
+- "The AI MUST log the time entry." (required, no exceptions)
+- "The AI SHOULD notify the project lead within 24 hours." (recommended)
+- "The AI MAY generate a budget summary." (optional)
+
+## Perplexity Prompt 2 — Completed 2026-02-21
+
+**Question:** What AI tools exist for defense contractor BD, SAM.gov, ITAR, and building a defense vendor presence?
+
+**The gap, stated explicitly by the research:**
+> "There is a noticeable lack of an integrated agent that covers: SAM.gov + other
+> defense portals monitoring, ITAR-aware content guidance, relationship mapping to
+> primes and PEOs, and lightweight pipeline/contract tracking tuned to 5–50 person
+> defense shops."
+
+That is Credo's exact profile. That is what we're building.
+
+### What exists and where it falls short
+
+| Tool | What it does | Gap |
+|------|-------------|-----|
+| **Samsearch** | AI layer on SAM.gov — aggregates opportunities, summarizes RFPs, capability statement drafts, win-probability scoring | Generic; no defense-specific nuance (ITAR, clearance, prime/sub strategy); doesn't integrate with engineering workflows |
+| **VisibleThread** | NLP analysis of solicitations — compliance extraction, risk flags, readability | Strong at text analysis; weak at small-shop BD workflows; no ITAR awareness |
+| **GovCon ERPs (various)** | AI-driven opportunity matching, past performance reuse, compliance matrices | Too heavy for small firms; require full-time contracts staff; expensive |
+| **Concentric AI / PreVeil** | ITAR data classification, sensitive document discovery, access control | CISO tools, not BD tools — help you not mishandle data but don't help BD |
+| **Generic AI agents** | OpenAI/Salesforce repurposed for lead gen, email follow-up, CRM updates | No FAR/DFARS knowledge; no CUI/ITAR handling; must bolt on all guardrails manually |
+
+### Consistent gaps reported across all tools (2024-2026)
+
+1. **"Too heavy, not SMB-native"** — tools designed for large primes; 1-3 person BD teams find them overpowered and expensive
+2. **Limited defense/ITAR nuance** — tools parse text and match NAICS but don't encode security clearance requirements, exportability of subsystems, ITAR data handling, or prime/sub positioning strategy
+3. **Weak integration with small shop reality** — small contractors juggle BD alongside engineering; they want an AI "BD analyst" inside their existing environment, not another portal
+4. **Capability statements still feel generic** — even AI-generated ones need heavy human editing to reflect actual niche capabilities and compliance posture
+5. **No end-to-end defense vendor presence assistant** — the specific gap we fill
+
+### Closest competitor: Samsearch
+
+Worth 30 minutes of evaluation before writing the GovCon procedure file. It's the most direct overlap with what we're building on the BD/SAM.gov side. Understanding what it does and doesn't do will sharpen the procedure file design.
+
+### What this means for the GovCon procedure file
+
+The SAM.gov + ITAR + GovCon procedure file must encode what no commercial tool currently does:
+- Defense-specific opportunity filtering (platform names, program offices, clearance requirements)
+- ITAR-aware BD content guidance (what you can/cannot say publicly, teaming constraints)
+- Prime/sub positioning strategy (which primes to target, how to approach them)
+- Integration with estimating and project data (something Samsearch cannot do)
+- Lightweight pipeline tracking inside the owner's existing workflow
+
+### Marketing/pitch language this research validates
+
+*"The only AI BD assistant built for a 10-person defense engineering firm — not a watered-down version of a big-prime tool."*
+
+## Gemini — Completed 2026-02-21
+
+**Question:** Best practices for AI system prompt / procedure file structure + landscape
+
+**Gap confirmed again:**
+> "No widely adopted open repository of back-office AI operating procedures for small businesses."
+> "Your concept sits at the intersection — and is currently underserved."
+
+**Positioning language worth keeping:**
+> "Linux for small-business AI operations."
+
+### System Prompt Patterns (validated against our approach)
+
+**Pattern C — SOP-Driven Agent** ← this is what our procedure files are
+```
+WHEN event X occurs:
+1. Retrieve documents
+2. Validate inputs
+3. Apply rule set Y
+4. Produce output Z
+```
+
+**Pattern D — State-Machine / Workflow Agent** ← relevant for estimating pipeline
+```
+STATE: Intake → Triage → Estimating → Drafting → QC → Submitted → Won/Lost
+Transitions triggered by events or data
+```
+
+Both patterns are already in our procedure files. This validates the structure.
+
+### Anatomy of a Mature Business Agent Prompt
+
+What experienced builders put inside system prompts — maps directly to our procedure file sections:
+
+| Section | What it contains | Our equivalent |
+|---------|-----------------|----------------|
+| Identity & scope | Role definition, authority limits, tone | "Purpose" section |
+| Operating rules | Policies, regulatory constraints, decision thresholds | "Decision rules" section |
+| Knowledge sources | Internal docs, databases, procedures | Loaded procedure files + JSON schemas |
+| Tool usage rules | When to search, escalate, ask | "Integration points" section |
+| Output requirements | Formats, templates, traceability | "Hard stops" + output specs |
+
+### MCP — Model Context Protocol
+
+Emerging standard for connecting agents to tools and data. Worth watching.
+If we use MCP-compatible tool connectors, procedure files can reference tools
+by standard names rather than custom implementations. Note for future architecture.
+
+### Research Complete
+
+All prompts returned. Research phase is done.
+
+## Gemini Prompt 5 — Completed 2026-02-21
+
+**Question:** Tools for a 12-person engineering firm pursuing ISO 9001 + defense contracting
+
+### Open-Source Tools Worth Knowing
+
+| Tool | What it does | Useful for us? |
+|------|-------------|----------------|
+| FlinkISO | Open-source QMS — document control, NCR, audit management | Know it exists; our procedure files cover same ground without extra tool |
+| AppFlowy | Self-hosted Notion alternative for SOPs/knowledge base | No — Credo is Google Workspace; Drive handles this |
+| VerifyWise | Open-source compliance/governance platform | Worth watching for ISO layer |
+| **SAM.gov API** | Pull opportunities programmatically by NAICS + keywords | **YES — build this. Claude can write the Python script.** |
+| CrewAI | Multi-agent framework for proposal "crews" | Pattern is useful; we use Claude directly instead |
+| LlamaIndex | RAG over past proposals and engineering specs | Future state — MVP doesn't need it |
+| OpenProject | Heavy Gantt + earned value, DoD-friendly | No — our PM module covers this |
+| **Ollama + local LLMs** | Run LLM entirely offline on local hardware | **YES — solution for CUI/classified work. No data leaves the building.** |
+| LangGraph | Strict multi-step workflow orchestration | Useful if we need hard pipeline enforcement |
+
+### Two Immediately Actionable Items
+
+**1. SAM.gov API opportunity polling**
+A scheduled Python script that queries SAM.gov API for:
+- Credo's NAICS codes
+- Keywords: mechanical engineering, prototyping, product development, embedded systems
+- Filters: set-aside type, agency, dollar threshold, due date
+Outputs a daily/weekly digest of new opportunities to the owner.
+This is concrete and buildable now. Goes into the GovCon procedure file.
+
+**2. Ollama for CUI-sensitive work**
+When a project is flagged CUI or potential classified:
+- Switch AI inference to a local Ollama instance (Llama 3 or similar)
+- No data sent to Anthropic API
+- All processing stays on Credo's hardware
+This is the security posture answer for sensitive defense work.
+Note in GovCon procedure file as a required mode switch.
+
+### Proposal Crew Pattern (from CrewAI concept)
+
+Even without CrewAI framework, the pattern is sound for our estimating procedure:
+- **Analyst role:** Reads RFP, extracts Section L/M requirements, compliance flags, schedule
+- **Librarian role:** Searches past proposals, past performance, capability statement library
+- **Writer role:** Drafts technical volume using Analyst's requirements + Librarian's content
+
+These map to three stages in our estimating procedure file:
+Triage (Analyst) → Build Plan / Workflow Selection (Librarian) → Draft (Writer)
+
+### Note on CLAUDE.md
+
+Gemini independently recommended:
+> "Create a file called CLAUDE.md. Claude Code reads this to understand your firm's
+> specific engineering standards and ISO 9001 requirements automatically."
+
+We're already doing this. Validation.
+
+## Gemini Prompt 6 — Completed 2026-02-21
+
+**Question:** Best practices for AI system prompts / procedure file structure for business process automation
+
+### Confirmed Architecture — Three-Component Hierarchy
+
+| Component | Purpose | Our Implementation |
+|-----------|---------|-------------------|
+| System Prompt | The "How" — rules, persona, strict logic | Orchestrator prompt loaded every session |
+| RAG Documents | The "What" — organizational knowledge, past work | JSON data + past proposals in Google Drive |
+| Operating Procedures (SOPs) | The "Steps" — sequential logic for tasks | Our markdown procedure files |
+
+These map exactly to our architecture. No gaps.
+
+### Why NOT Fine-Tuning (important for documentation)
+
+Three reasons fine-tuning is wrong for business process automation:
+1. **Staleness** — when business rules change, you'd have to retrain. With our approach, edit a text file.
+2. **Cost** — RAG is cheaper and traceable. The AI can cite exactly which rule it followed.
+3. **Rigidity** — fine-tuning degrades general reasoning needed for complex tasks.
+
+**This is a key selling point of the platform:** customers never need to retrain a model.
+When Credo updates their quoting logic or ISO procedures, they edit a markdown file.
+
+### Procedure File Format Validated
+
+Gemini's example structure matches what we're already writing:
+```
+# PROCEDURE: [Name] [v2.4]
+## 1. Goal
+## 2. Explicit Rules (ALWAYS / NEVER)
+## 3. Step-by-Step Execution
+```
+
+**Decision:** Add version numbers to procedure file headers going forward.
+Format: `Version: 1.0` in header. Increment on meaningful changes.
+pm-core.md already has this — keep it.
+
+### Useful Marketing Language
+
+> "Modular SOP files — essentially Markdown documents that serve as the AI's Employee Handbook."
+
+This is how we explain what procedure files are to non-technical customers.
+
+### Research Phase — Complete
+
+All research done. All findings saved. Architecture validated from four independent sources.
+
 ## Pending Research
 
-Still waiting for results from:
-- [ ] Perplexity Prompt 1: Open-source AI procedure files / GitHub repos
-- [ ] Perplexity Prompt 2: Defense contractor AI tools landscape
-- [ ] Gemini Prompt 5: Tools for engineering firm pursuing ISO + defense
-- [ ] Gemini Prompt 6: Best practices for AI system prompt / procedure file structure
+All research complete:
+- [x] Perplexity Prompt 1: Open-source AI procedure files / GitHub repos
+- [x] Perplexity Prompt 2: Defense contractor AI tools landscape
+- [x] Gemini Prompt 5: Tools for ISO + defense engineering firm
+- [x] Gemini Prompt 6: System prompt architecture best practices
 
 ---
 
