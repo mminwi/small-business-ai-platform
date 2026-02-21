@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Work order schema — job execution records including labor time and material usage. Source of truth for what happened on a job. Customer contact lives in schemas/crm.json. Inventory items live in schemas/inventory.json. Scheduling appointments live in schemas/schedule.json.",
+
+  "work_orders": [
+    {
+      "work_order_id": "WO-2026-001",
+      "work_order_number": "2026-001",
+      "$work_order_number_note": "Human-readable sequential number. Displayed on invoices and customer documents.",
+      "created_at": "",
+      "updated_at": "",
+
+      "customer_id": "",
+      "$customer_id_note": "Links to crm.json contacts[]. Pull name, phone, preferred_channel, and billing address from there.",
+      "appointment_id": "",
+      "$appointment_id_note": "Links to schedule.json appointments[]. Set when this WO was created from a dispatched appointment. Null if WO created independently.",
+
+      "service_location": {
+        "label": "",
+        "$label_note": "Optional short label — e.g. 'Main building', 'Rental unit 2'.",
+        "line1": "", "line2": "", "city": "", "state": "", "postal_code": "", "country": "US",
+        "access_instructions": ""
+      },
+
+      "title": "",
+      "$title_note": "Short job label — e.g. 'Water heater replacement', 'Annual HVAC tune-up'.",
+      "description": "",
+      "$description_note": "Full scope, issue description, or customer complaint. What needs to be done and why.",
+
+      "job_type": "repair | install | maintenance | inspection | other",
+      "priority": "low | normal | high | emergency",
+
+      "status": "draft | scheduled | dispatched | in_progress | on_hold | completed | ready_for_invoicing | invoiced | closed | canceled",
+      "$status_note": "Lifecycle state. See procedure file for allowed transitions and rules.",
+
+      "billing_type": "time_and_materials | fixed_price | no_charge",
+      "$billing_type_note": "time_and_materials: bill labor hours + parts. fixed_price: one amount agreed upfront. no_charge: warranty, callback, or goodwill.",
+      "billable": true,
+
+      "estimated_labor_hours": 0,
+      "estimated_material_cost": 0,
+      "estimated_total": 0,
+
+      "actual_labor_hours": 0,
+      "$actual_labor_note": "Rolled up automatically from approved time_entries[]. Do not edit directly.",
+      "actual_material_cost": 0,
+      "$actual_material_note": "Rolled up automatically from material_usage[]. Do not edit directly.",
+      "actual_total": 0,
+
+      "checklist": [
+        {
+          "task_id": "CHK-001",
+          "title": "",
+          "required": true,
+          "$required_note": "If true, WO cannot be marked completed until this task is done or explicitly overridden.",
+          "status": "not_started | in_progress | done | skipped",
+          "skip_reason": "",
+          "completed_at": ""
+        }
+      ],
+      "$checklist_note": "Optional. List of steps that must be completed before the job can close. Configured per job type or trade.",
+
+      "source": "manual | estimate | scheduling | recurring | other",
+      "source_reference_id": "",
+      "$source_note": "ID of the record that triggered WO creation — e.g. appointment_id, estimate_id.",
+
+      "on_hold_reason": "",
+      "$on_hold_note": "Required when status = on_hold. Describes why work is paused.",
+
+      "completion_notes": "",
+      "$completion_notes_note": "Tech's narrative of what was done, what was found, and any follow-up needed. Internal only.",
+      "customer_visible_summary": "",
+      "$customer_summary_note": "Polished plain-language summary for invoice and customer documents. Reviewed by owner before use.",
+      "customer_signature": "",
+      "$signature_note": "Name of customer or authorized representative who signed off on site.",
+
+      "completed_at": "",
+      "closed_at": "",
+
+      "linked_invoice_id": "",
+      "$invoice_note": "Set by invoicing module when invoice is created from this WO.",
+
+      "notes_internal": "",
+      "tags": []
+    }
+  ],
+
+  "time_entries": [
+    {
+      "time_entry_id": "TE-001",
+      "created_at": "",
+      "updated_at": "",
+
+      "work_order_id": "",
+      "technician_id": "",
+      "$technician_note": "Links to the field worker or employee performing the work. Match field_worker_id in schedule.json or your HR record.",
+
+      "clock_in_at": "",
+      "clock_out_at": "",
+      "$clock_note": "clock_out_at is null while the tech is still working. Minutes are computed when clock_out_at is set.",
+      "minutes": 0,
+      "$minutes_note": "Computed: (clock_out_at - clock_in_at) in minutes, or entered manually for after-the-fact logging.",
+
+      "entry_type": "regular | overtime | travel | non_billable",
+      "$entry_type_note": "regular: standard billable hours. travel: drive time (may or may not be billed, configure per company). non_billable: internal time that does not appear on invoice.",
+
+      "labor_cost": 0,
+      "$labor_cost_note": "Cost to the business: minutes / 60 × technician cost rate. Pulled from rate configuration.",
+      "labor_bill_amount": 0,
+      "$bill_amount_note": "Amount to charge customer: minutes / 60 × bill rate. Pulled from rate configuration. Zero if non_billable.",
+
+      "approved": false,
+      "$approved_note": "Set to true when owner or supervisor reviews and approves. Time must be approved before WO moves to ready_for_invoicing.",
+      "approved_by": "",
+      "approved_at": "",
+
+      "notes": ""
+    }
+  ],
+
+  "material_usage": [
+    {
+      "usage_id": "MAT-001",
+      "created_at": "",
+      "updated_at": "",
+
+      "work_order_id": "",
+      "part_id": "",
+      "$part_id_note": "Links to inventory.json parts[]. Must exist before parts can be logged to a WO.",
+      "part_number": "",
+      "$snapshot_note": "Snapshot of the part number and description at time of use — for historical accuracy if the part record changes later.",
+      "description": "",
+
+      "quantity": 0,
+      "unit_of_measure": "",
+
+      "unit_cost": 0,
+      "$cost_note": "Cost at time of issue, pulled from inventory balance. Stored here for historical accuracy.",
+      "extended_cost": 0,
+      "$extended_cost_note": "quantity × unit_cost. Rolled up to work_order.actual_material_cost.",
+
+      "unit_price": 0,
+      "$price_note": "Amount to bill the customer per unit. May include markup over cost. Configure per company.",
+      "extended_price": 0,
+
+      "billable": true,
+      "location_id": "",
+      "$location_note": "Inventory location from which the part was pulled — e.g. truck stock, shop shelf. Links to inventory.json locations[].",
+      "inventory_transaction_id": "",
+      "$inv_tx_note": "ID of the inventory issue transaction created when this material usage was logged. Links to inventory.json transactions[].",
+
+      "notes": ""
+    }
+  ]
+}

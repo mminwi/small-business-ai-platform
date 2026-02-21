@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Inventory & parts schema — parts catalog, storage locations, stock balances, transaction log, purchase orders, and suppliers. Source of truth for what the company has on hand and where. Work order material usage links back here via transactions[]. QuickBooks is the financial authority for inventory valuation; this schema is the operational authority for quantities.",
+
+  "parts": [
+    {
+      "part_id": "PART-0001",
+      "created_at": "",
+      "updated_at": "",
+
+      "part_number": "",
+      "$part_number_note": "The company's own part number. Used on work orders, purchase orders, and invoices.",
+      "description": "",
+      "category": "",
+      "$category_note": "Freeform grouping — e.g. 'fittings', 'filters', 'refrigerant', 'tools', 'consumables'. Configure per trade.",
+      "type": "component | consumable | tool | material",
+      "$type_note": "component: discrete part installed in something. consumable: used up on a job (tape, solder, cleaning solution). tool: not billed to customers. material: bulk stock (pipe, wire, duct).",
+      "status": "active | inactive",
+      "$status_note": "Inactive parts are hidden from pick lists but kept for historical records.",
+
+      "unit_of_measure": "",
+      "$uom_note": "How this part is counted — e.g. 'each', 'box', 'ft', 'lb', 'gal'.",
+
+      "default_location_id": "",
+      "$default_location_note": "Primary storage location — links to locations[]. Used as the default when issuing or receiving if no location is specified.",
+      "default_supplier_id": "",
+      "$default_supplier_note": "Preferred supplier for reorders — links to suppliers[].",
+
+      "reorder_min": 0,
+      "$reorder_min_note": "Alert fires when on_hand minus allocated drops to or below this number.",
+      "reorder_max": 0,
+      "$reorder_max_note": "Target quantity when reordering. AI drafts PO to bring stock up to this level.",
+      "lead_time_days": 0,
+      "$lead_time_note": "Typical days from order placed to receipt at the shop. Used for expected delivery date on draft POs.",
+
+      "unit_cost": 0,
+      "$unit_cost_note": "Current average cost per unit. Updated when parts are received. Used for job costing.",
+      "unit_price": 0,
+      "$unit_price_note": "Default sell price to customers. Includes markup. Can be overridden per work order.",
+
+      "qb_item_ref": "",
+      "$qb_note": "QuickBooks inventory item ID. Required before any QB API sync. Parts without this field will not sync.",
+
+      "barcodes": [],
+      "$barcodes_note": "List of scannable codes (barcode or QR) that identify this part. Useful for field receiving and issuing via phone camera.",
+
+      "notes": ""
+    }
+  ],
+
+  "locations": [
+    {
+      "location_id": "LOC-001",
+      "created_at": "",
+      "updated_at": "",
+
+      "name": "",
+      "$name_note": "Human-readable name — e.g. 'Main Shop', 'Truck 1 — [Name]', 'Job Site — [Address]', 'Shelf A'.",
+      "type": "shop | truck | site | bin",
+      "$type_note": "shop: fixed storage location (warehouse, shop floor). truck: mobile stock on a service vehicle. site: temporary location at a customer job site. bin: sub-location within a shop (aisle, shelf, bin).",
+      "parent_location_id": "",
+      "$parent_note": "Optional. Links to another location for nested storage — e.g. a bin inside the shop. Leave blank for top-level locations.",
+      "active": true,
+      "notes": ""
+    }
+  ],
+
+  "balances": [
+    {
+      "balance_id": "BAL-001",
+      "part_id": "",
+      "location_id": "",
+      "$balance_note": "One record per part per location. This is the current snapshot — always derived from transactions[]. Do not edit directly; update by posting a transaction.",
+      "on_hand_qty": 0,
+      "$on_hand_note": "Physically present at this location right now.",
+      "allocated_qty": 0,
+      "$allocated_note": "Reserved for open work orders that have not yet been issued. Counts against available stock.",
+      "on_order_qty": 0,
+      "$on_order_note": "On an open purchase order, expected but not yet received.",
+      "last_updated_at": ""
+    }
+  ],
+
+  "transactions": [
+    {
+      "transaction_id": "TXN-001",
+      "timestamp": "",
+      "performed_by": "",
+
+      "type": "receipt | issue | return | transfer_out | transfer_in | adjustment_positive | adjustment_negative | correction",
+      "$type_note": "receipt: parts received from a supplier (PO). issue: parts consumed on a work order. return: parts returned from a job back to stock. transfer_out / transfer_in: moving stock between locations (use same source_doc_id to pair them). adjustment_positive: found extra stock (cycle count, data fix). adjustment_negative: stock removed (damage, shrinkage, data fix). correction: admin override.",
+
+      "part_id": "",
+      "location_id": "",
+      "$location_note": "Primary location. For transfers: transfer_out records the source, transfer_in records the destination.",
+      "related_location_id": "",
+      "$related_location_note": "For transfers: the other location in the pair. For returns: the location being returned to.",
+
+      "quantity": 0,
+      "$quantity_note": "Always positive. Direction is determined by the transaction type.",
+      "unit_of_measure": "",
+      "unit_cost": 0,
+      "total_cost": 0,
+
+      "source_doc_type": "work_order | purchase_order | manual | other",
+      "source_doc_id": "",
+      "$source_doc_note": "ID of the record that triggered this transaction — e.g. work_order_id or po_id. Required for work_order issues and PO receipts.",
+
+      "reason_code": "",
+      "$reason_code_note": "Required for adjustments and corrections. Examples: 'cycle_count', 'damage', 'theft', 'data_error', 'over_received'. Freeform string.",
+
+      "notes": ""
+    }
+  ],
+
+  "purchase_orders": [
+    {
+      "po_id": "PO-2026-001",
+      "po_number": "2026-001",
+      "created_at": "",
+      "updated_at": "",
+
+      "supplier_id": "",
+      "$supplier_note": "Links to suppliers[]. Pull name, contact, and payment terms from there.",
+      "supplier_name": "",
+      "$supplier_name_note": "Snapshot of supplier name at PO creation. Kept for display even if supplier record changes.",
+
+      "status": "draft | approved | sent | partially_received | received | canceled",
+      "$status_note": "draft: built by AI, not yet reviewed. approved: owner reviewed and confirmed. sent: transmitted to supplier. partially_received / received: goods have arrived. canceled: voided.",
+
+      "order_date": "",
+      "expected_date": "",
+      "$expected_date_note": "Estimated delivery date. Calculated from lead_time_days if not specified by supplier.",
+      "ship_to_location_id": "",
+      "$ship_to_note": "Where the parts should be delivered. Links to locations[].",
+
+      "qb_po_ref": "",
+      "$qb_po_note": "QuickBooks purchase order ID, set after syncing to QB. Used for vendor bill reconciliation.",
+
+      "total_amount": 0,
+      "$total_note": "Sum of all line extended prices. Computed on save.",
+
+      "notes": "",
+
+      "lines": [
+        {
+          "line_id": "LINE-001",
+          "part_id": "",
+          "description": "",
+          "$desc_note": "Snapshot of part description at time of PO creation.",
+          "ordered_qty": 0,
+          "received_qty": 0,
+          "$received_note": "Updated when receipts are recorded. Difference from ordered_qty drives partial_received status.",
+          "unit_of_measure": "",
+          "unit_price": 0,
+          "extended_price": 0,
+          "$extended_note": "ordered_qty × unit_price.",
+          "supplier_sku": "",
+          "$supplier_sku_note": "Supplier's own part number for this line. Used on the PO sent to the vendor."
+        }
+      ]
+    }
+  ],
+
+  "suppliers": [
+    {
+      "supplier_id": "SUP-001",
+      "created_at": "",
+      "updated_at": "",
+
+      "name": "",
+      "status": "active | inactive",
+      "phone": "",
+      "email": "",
+      "account_number": "",
+      "$account_number_note": "The company's account number with this supplier. Included on purchase orders.",
+      "payment_terms": "",
+      "$payment_terms_note": "e.g. 'Net 30', 'COD', 'Net 15'. Used when creating vendor bills in QuickBooks.",
+      "qb_vendor_ref": "",
+      "$qb_vendor_note": "QuickBooks vendor ID. Required before posting bills via QB API.",
+
+      "parts": [
+        {
+          "part_id": "",
+          "supplier_sku": "",
+          "$supplier_sku_note": "This supplier's catalog number for the part. Used on PO lines.",
+          "lead_time_days": 0,
+          "min_order_qty": 0,
+          "$min_order_note": "Supplier's minimum order quantity for this part.",
+          "last_purchase_price": 0,
+          "$last_price_note": "Most recent price paid per unit. Updated on receipt. Used as default unit_price on draft PO lines.",
+          "notes": ""
+        }
+      ]
+    }
+  ]
+}
