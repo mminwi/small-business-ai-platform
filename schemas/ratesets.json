@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Billing rate sets. Referenced by invoice.json and opportunity.json via rateset_id. Never hardcode rates in procedure files or invoice records — always look them up here. One rateset_id per billing configuration. A business may maintain multiple rate sets (e.g. standard, government, preferred client).",
+
+  "ratesets": [
+    {
+      "rateset_id": "2026-STD",
+      "$rateset_id_note": "ID referenced in invoice records and opportunity estimates. Format: [year]-[label].",
+      "label": "Standard Billing Rates",
+      "effective_date": "2026-01-01",
+      "expires_date": "",
+      "$expires_note": "Leave blank if no expiration. Rate set remains active until superseded.",
+      "currency": "USD",
+      "structure": "role_based | blended",
+      "$structure_note": "role_based = different rates per discipline. blended = one rate for all labor.",
+
+      "blended_rate_usd": 0,
+      "$blended_note": "Used when structure = blended. Set to 0 if structure = role_based.",
+
+      "roles": [
+        {
+          "role": "PM",
+          "label": "Project Manager",
+          "rate_usd": 0,
+          "$rate_note": "Hourly billing rate for this role. Set to 0 if role is not billed separately (e.g. PM included in blended rate)."
+        },
+        {
+          "role": "ME",
+          "label": "Mechanical Engineer",
+          "rate_usd": 0
+        },
+        {
+          "role": "EE",
+          "label": "Electrical Engineer",
+          "rate_usd": 0
+        },
+        {
+          "role": "ID",
+          "label": "Industrial Designer",
+          "rate_usd": 0
+        },
+        {
+          "role": "SW",
+          "label": "Software / Firmware Engineer",
+          "rate_usd": 0
+        },
+        {
+          "role": "TECH",
+          "label": "Prototype Technician",
+          "rate_usd": 0
+        },
+        {
+          "role": "ADMIN",
+          "label": "Administrative",
+          "rate_usd": 0,
+          "$admin_note": "Include if admin time is billable on any project type."
+        }
+      ],
+
+      "odc_markup_pct": 0,
+      "$odc_note": "Markup applied to other direct costs (materials, travel, subcontractors) if any. 0 = no markup. Example: 10 = cost + 10%.",
+
+      "notes": ""
+    },
+
+    {
+      "$comment": "Example of a second rate set — government/prime subcontract rates. Copy and configure as needed.",
+      "rateset_id": "2026-GOV",
+      "label": "Government Contract Rates",
+      "effective_date": "2026-01-01",
+      "expires_date": "",
+      "currency": "USD",
+      "structure": "role_based",
+      "blended_rate_usd": 0,
+      "roles": [
+        { "role": "PM",   "label": "Project Manager",             "rate_usd": 0 },
+        { "role": "ME",   "label": "Mechanical Engineer",         "rate_usd": 0 },
+        { "role": "EE",   "label": "Electrical Engineer",         "rate_usd": 0 },
+        { "role": "ID",   "label": "Industrial Designer",         "rate_usd": 0 },
+        { "role": "SW",   "label": "Software / Firmware Engineer","rate_usd": 0 },
+        { "role": "TECH", "label": "Prototype Technician",        "rate_usd": 0 }
+      ],
+      "odc_markup_pct": 0,
+      "notes": "Government and prime subcontract work. Verify applicable FAR/DFARS billing requirements before use."
+    }
+  ]
+}

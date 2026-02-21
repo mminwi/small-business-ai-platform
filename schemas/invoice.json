@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Invoice record schema. One record per invoice generated. QB is the accounting source of truth; this record is for AI operational tracking. Do not delete invoices — void them.",
+
+  "invoice_id": "INV-2026-001",
+  "$invoice_id_note": "Format: [invoice_prefix][year]-[sequential number]. Prefix configured per customer.",
+
+  "project_id": "PROJ-2026-001",
+  "client_id": "CLIENT-001",
+  "linked_estimate_id": "OPP-2026-001",
+  "$linked_estimate_note": "Null if no estimate exists. Links to opportunity.json for WBS and budget hours.",
+
+  "invoice_date": "",
+  "billing_period_start": "",
+  "billing_period_end": "",
+  "$billing_period_note": "Required for T&M and percent-complete models. Null for deposit and fixed-price invoices.",
+
+  "billing_model": "percent_complete | milestone | deposit | materials_upfront | tm | fixed_price",
+  "$billing_model_note": "Copied from project config at time of invoice generation. Not editable after creation.",
+
+  "line_items": [
+    {
+      "item_id": "LI-01",
+      "description": "",
+      "task_id": "",
+      "$task_id_note": "Links to WBS task. Null for deposit and materials line items.",
+      "quantity": 0,
+      "unit": "hours | each | lump_sum",
+      "rate_usd": 0,
+      "amount_usd": 0,
+      "role": "PM | ME | EE | ID | SW | TECH | blended | materials | other",
+      "$role_note": "Role used to look up rate. 'blended' if customer uses a single rate for all labor.",
+      "pct_complete_this_period": 0,
+      "$pct_note": "Percent-complete model only. Difference from last invoice to this one."
+    }
+  ],
+
+  "subtotal_usd": 0,
+  "tax_rate": 0,
+  "tax_usd": 0,
+  "total_usd": 0,
+
+  "status": "draft",
+  "$status_values": ["draft", "approved", "sent", "paid", "partial", "overdue", "voided"],
+  "$status_rules": "Only owner approval changes status from draft→approved. Only explicit send action changes approved→sent. Never auto-advance past approved.",
+
+  "payment_terms": "net_30",
+  "$payment_terms_values": ["net_15", "net_30", "net_45", "due_on_receipt", "custom"],
+  "payment_terms_custom": "",
+  "$payment_terms_custom_note": "Describe custom terms if payment_terms = custom.",
+
+  "due_date": "",
+  "$due_date_note": "Calculated: invoice_date + payment_terms. Set at invoice creation.",
+
+  "amount_paid_usd": 0,
+  "balance_due_usd": 0,
+  "$balance_note": "balance_due_usd = total_usd - amount_paid_usd. Recalculate on every payment received.",
+
+  "payments": [
+    {
+      "payment_id": "PAY-001",
+      "amount_usd": 0,
+      "received_date": "",
+      "method": "check | wire | ach | credit_card | other",
+      "notes": ""
+    }
+  ],
+
+  "billing_snapshot": {
+    "$comment": "Percent-complete model only. Snapshot of task completion at time of invoice generation.",
+    "tasks": [
+      {
+        "task_id": "T1",
+        "task_description": "",
+        "budgeted_hours": 0,
+        "pct_complete_prior": 0,
+        "pct_complete_this_invoice": 0,
+        "hours_billed_this_invoice": 0,
+        "hours_billed_cumulative": 0
+      }
+    ]
+  },
+
+  "deposit_info": {
+    "$comment": "Deposit model only. Null for all other billing models.",
+    "deposit_pct": 0,
+    "total_contract_value_usd": 0,
+    "deposit_amount_usd": 0,
+    "applied_to_final_invoice": false
+  },
+
+  "qb_invoice_id": "",
+  "$qb_note": "Null until QuickBooks API integration is live. Set by invoicing-qb.md when invoice is pushed to QB.",
+
+  "sent_date": "",
+  "sent_to": "",
+  "$sent_to_note": "Email address or name of recipient at time of sending.",
+
+  "voided_date": "",
+  "void_reason": "",
+  "$void_note": "Set if status = voided. Record is never deleted.",
+
+  "notes": "",
+  "$notes_note": "Billing notes, special instructions, or audit log of status changes.",
+
+  "created_by": "ai | human",
+  "created_at": "",
+  "approved_by": "",
+  "approved_at": "",
+  "last_updated_at": ""
+}
