@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "BD content library — past performance, published content, agency contacts, content calendar. Generic template.",
+
+  "past_performance": [
+    {
+      "pp_id": "PP-001",
+      "project_title": "",
+      "$title_note": "Use a generic title if customer is under NDA. E.g. 'Ruggedized Electronics Design for Airborne Application'",
+      "customer_type": "prime | agency | commercial | DoD | other",
+      "customer_name_public": "",
+      "$customer_name_note": "Leave blank if NDA or customer has not approved citation. Use customer_type instead.",
+      "period": "",
+      "$period_format": "e.g. '2024–2025' or 'Q1 2024'",
+      "dollar_range": "<$500K | $500K–$1M | $1M–$5M | >$5M | undisclosed",
+      "description": "",
+      "$description_note": "150–200 words. Suitable for copy/paste into a proposal past performance volume without editing.",
+      "relevance_tags": [],
+      "$relevance_tags_note": "Technology areas, NAICS codes, agency mission keywords. Used to match PP to opportunities.",
+      "customer_approved_to_cite": "yes | no | pending",
+      "nda_restrictions": "",
+      "linked_project_id": "",
+      "used_in": [],
+      "$used_in_note": "List of opportunity_ids where this past performance was cited"
+    }
+  ],
+
+  "content_library": [
+    {
+      "content_id": "CONT-001",
+      "type": "linkedin_post | capability_brief | white_paper | sbir_inquiry | technical_brief | agency_one_pager | conference_abstract | capability_statement",
+      "title": "",
+      "status": "draft | approved | published | archived",
+      "drafted_date": "",
+      "drafted_by": "",
+      "approved_by": "",
+      "approved_date": "",
+      "published_date": "",
+      "channel": "linkedin | email | conference | website | direct_outreach",
+      "topic_tags": [],
+      "file_path": "",
+      "itar_cleared": false,
+      "$itar_cleared_note": "Must be confirmed true by a human before any public distribution",
+      "customer_confidential_cleared": false,
+      "notes": ""
+    }
+  ],
+
+  "agency_contacts": [
+    {
+      "contact_id": "AGC-001",
+      "agency": "",
+      "$agency_examples": "AFWERX | DIU | Army SBIR | NSWC | AFRL | DARPA | ONR | MDA",
+      "program_office": "",
+      "name": "",
+      "title": "",
+      "email": "",
+      "phone": "",
+      "linkedin_url": "",
+      "last_contact_date": "",
+      "relationship_status": "new | warm | active | lapsed",
+      "how_we_know": "conference | referral | prior_contract | cold_outreach | other",
+      "relevant_technology_areas": [],
+      "interaction_log": [
+        {
+          "date": "",
+          "type": "meeting | call | email | conference | linkedin",
+          "summary": "",
+          "follow_up_needed": false,
+          "follow_up_by": ""
+        }
+      ],
+      "notes": ""
+    }
+  ],
+
+  "content_calendar": [
+    {
+      "calendar_id": "CAL-001",
+      "planned_date": "",
+      "type": "linkedin_post | capability_brief | white_paper | sbir_inquiry | other",
+      "topic": "",
+      "status": "planned | drafted | approved | published | cancelled",
+      "content_id": "",
+      "$content_id_note": "Links to content_library entry once drafted",
+      "assigned_to": "",
+      "notes": ""
+    }
+  ]
+}
