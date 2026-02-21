@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Scheduling & dispatch schema — jobs, appointments, field workers, and availability. Source of truth for who is doing what work, when, and where. Customer contact detail lives in schemas/crm.json.",
+
+  "jobs": [
+    {
+      "job_id": "JOB-2026-001",
+      "job_number": "2026-001",
+      "$job_number_note": "Human-readable sequential number. Displayed on invoices and customer communications.",
+      "created_at": "",
+      "updated_at": "",
+      "customer_id": "",
+      "$customer_id_note": "Links to crm.json contacts[]. Pull customer name, phone, and preferred_channel from there.",
+      "service_location": {
+        "label": "",
+        "$label_note": "Optional short label — e.g. 'Main house', 'Rental unit'.",
+        "line1": "", "line2": "", "city": "", "state": "", "postal_code": "", "country": "US",
+        "geo": { "lat": 0, "lng": 0 },
+        "access_instructions": ""
+      },
+      "problem_description": "",
+      "job_type": "repair | install | maintenance | inspection | estimate_visit | other",
+      "required_skills": [],
+      "$required_skills_note": "List of skill codes. Must match skills[] codes on field workers. Configurable per trade.",
+      "estimated_duration_minutes": 0,
+      "priority": "low | normal | high | emergency",
+      "sla_due_at": "",
+      "$sla_note": "Deadline for job completion if any SLA applies. Leave blank if none.",
+      "status": "new | scheduled | in_progress | on_hold | completed | canceled",
+      "source": "phone | web_form | email | repeat | crm_opportunity | other",
+      "crm_opportunity_id": "",
+      "$crm_opp_note": "Set when this job was created from a won CRM opportunity.",
+      "linked_invoice_id": "",
+      "$invoice_note": "Set when invoicing module creates the invoice for this job.",
+      "notes_internal": "",
+      "$internal_note": "Dispatcher notes — visible to team only, not the customer.",
+      "notes_customer_visible": "",
+      "tags": []
+    }
+  ],
+
+  "appointments": [
+    {
+      "appointment_id": "APT-001",
+      "created_at": "",
+      "updated_at": "",
+      "job_id": "",
+      "field_worker_id": "",
+      "$field_worker_note": "Null if appointment is unassigned (time window set but no tech yet).",
+      "scheduled_start": "",
+      "scheduled_end": "",
+      "time_window_start": "",
+      "time_window_end": "",
+      "$window_note": "Customer-facing window (broader than scheduled time). E.g. window 9am–11am, scheduled 9:30am.",
+      "status": "unassigned | assigned | en_route | on_site | paused | completed | canceled",
+      "visit_number": 1,
+      "$visit_note": "1 for first visit. Increment for multi-visit jobs (e.g. return after parts arrive).",
+      "notes_dispatcher": "",
+      "google_calendar_event_id": "",
+      "$gcal_note": "Google Calendar event ID for this appointment. Used to update or delete the event on reschedule.",
+      "notification_state": {
+        "booking_confirmed_at": "",
+        "reminder_sent_at": "",
+        "tech_on_the_way_sent_at": "",
+        "completion_summary_sent_at": ""
+      },
+      "$notification_note": "Timestamps track which notifications have been sent. Prevents duplicate sends."
+    }
+  ],
+
+  "field_workers": [
+    {
+      "field_worker_id": "FW-001",
+      "created_at": "",
+      "updated_at": "",
+      "name": "",
+      "phone": "",
+      "email": "",
+      "home_base": {
+        "lat": 0, "lng": 0,
+        "$note": "Starting location for route planning. Usually home address or shop address."
+      },
+      "territory": "",
+      "$territory_note": "Geographic coverage description — e.g. 'North side', 'ZIP codes 53700–53799'. Freeform for small teams.",
+      "skills": [
+        { "code": "", "level": 1, "$level_note": "1=basic, 5=expert. Match against job required_skills[]." }
+      ],
+      "certifications": [],
+      "$cert_note": "Any required licenses or certifications — e.g. 'journeyman_plumber', 'gas_line_cert'. Freeform strings.",
+      "max_daily_hours": 8,
+      "active": true,
+      "notes": ""
+    }
+  ],
+
+  "availability": [
+    {
+      "availability_id": "AVAIL-001",
+      "field_worker_id": "",
+      "type": "work | pto | break | blocked",
+      "$type_note": "work = scheduled working hours. pto = paid time off. blocked = unavailable for any reason.",
+      "start": "",
+      "end": "",
+      "recurring": false,
+      "$recurring_note": "True for regular weekly schedules (e.g. Mon–Fri 7am–4pm). False for exceptions.",
+      "recurrence_rule": "",
+      "$recurrence_note": "RRULE string for recurring availability — e.g. 'FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR'. Leave blank if not recurring.",
+      "reason": "",
+      "$reason_note": "Optional explanation — e.g. 'vacation', 'training day', 'sick'. Internal only."
+    }
+  ]
+}

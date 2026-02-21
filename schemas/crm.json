@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "CRM schema — contacts, companies, leads, and interaction history. Opportunity detail lives in schemas/opportunity.json. This file is the source of truth for who the business deals with and the full history of every touchpoint.",
+
+  "contacts": [
+    {
+      "contact_id": "CON-001",
+      "created_at": "",
+      "updated_at": "",
+      "first_name": "",
+      "last_name": "",
+      "company_id": "",
+      "$company_id_note": "Links to companies[]. Null for individual homeowners with no company.",
+      "phones": [
+        { "number": "", "type": "mobile | work | home | other", "primary": true }
+      ],
+      "emails": [
+        { "email": "", "type": "work | home | other", "primary": true }
+      ],
+      "address": {
+        "line1": "", "line2": "", "city": "", "state": "", "postal_code": "", "country": "US"
+      },
+      "preferred_channel": "phone | email | sms | other",
+      "lifecycle_stage": "prospect | customer | past_customer",
+      "source": "manual | web_form | import_google_contacts | import_csv | referral | api",
+      "tags": [],
+      "owner": "",
+      "quickbooks_customer_id": "",
+      "$qb_note": "Populated when this contact is synced to QuickBooks as a Customer record. Never populate manually — let the invoicing module handle the sync.",
+      "quickbooks_sync_status": "never | pending | synced | error",
+      "google_resource_name": "",
+      "$google_note": "Google People API resourceName (e.g. people/xxxx). Populated if Google Contacts sync is enabled.",
+      "notes": "",
+      "do_not_contact": false
+    }
+  ],
+
+  "companies": [
+    {
+      "company_id": "CO-001",
+      "created_at": "",
+      "updated_at": "",
+      "name": "",
+      "legal_name": "",
+      "type": "business | individual | nonprofit | government | other",
+      "industry": "",
+      "main_phone": "",
+      "website": "",
+      "billing_address": {
+        "line1": "", "line2": "", "city": "", "state": "", "postal_code": "", "country": "US"
+      },
+      "primary_contact_id": "",
+      "status": "prospect | active_customer | inactive | archived",
+      "source": "manual | web_form | import_csv | referral | api",
+      "tags": [],
+      "owner": "",
+      "quickbooks_customer_id": "",
+      "quickbooks_sync_status": "never | pending | synced | error",
+      "notes": ""
+    }
+  ],
+
+  "leads": [
+    {
+      "lead_id": "LEAD-001",
+      "created_at": "",
+      "updated_at": "",
+      "title": "",
+      "$title_note": "Short label for the inquiry — e.g. 'Leaky faucet at 123 Main' or 'Catering for 80 guests'.",
+      "description": "",
+      "contact_id": "",
+      "company_id": "",
+      "email": "",
+      "$email_note": "Captured directly on the lead for pre-contact web forms before a full contact record exists.",
+      "phone": "",
+      "source": "phone_call | email | web_form | referral | ad | other",
+      "status": "new | working | qualified | disqualified | converted",
+      "disqualification_reason": "none | budget | timing | outside_scope | competitor | no_response | other",
+      "estimated_value": 0,
+      "$estimated_value_note": "Rough job size in dollars. Used for pipeline reporting only — not a quote.",
+      "pipeline_stage": "inquiry | needs_analysis | estimate_sent | follow_up | scheduled_visit",
+      "expected_close_date": "",
+      "owner": "",
+      "converted_opportunity_id": "",
+      "$converted_note": "Set when this lead is converted. Links to the resulting opportunity.",
+      "tags": [],
+      "notes": ""
+    }
+  ],
+
+  "interactions": [
+    {
+      "interaction_id": "INT-001",
+      "created_at": "",
+      "timestamp": "",
+      "$timestamp_note": "When the interaction actually occurred (vs. when it was logged).",
+      "type": "phone_call | email_inbound | email_outbound | sms | meeting | note | system",
+      "direction": "inbound | outbound | internal | none",
+      "contact_id": "",
+      "lead_id": "",
+      "opportunity_id": "",
+      "$parent_note": "At least one of contact_id, lead_id, or opportunity_id must be set.",
+      "actor": "",
+      "$actor_note": "Which team member made the call, sent the email, or logged the note.",
+      "subject": "",
+      "body": "",
+      "$body_note": "Summary of what was discussed or said. For emails: plain-text summary, not full raw content.",
+      "outcome": "none | left_voicemail | spoke | no_show | rescheduled | sent_proposal | accepted_proposal | rejected_proposal",
+      "follow_up_date": "",
+      "follow_up_status": "none | pending | completed | canceled",
+      "ai_summary": "",
+      "$ai_summary_note": "Brief AI-generated summary of this interaction, populated automatically.",
+      "channel_metadata": {},
+      "$channel_metadata_note": "For email: gmail_message_id, thread_id. For calendar: event_id. For calls: duration. Store raw reference here.",
+      "is_auto_generated": false
+    }
+  ]
+}
