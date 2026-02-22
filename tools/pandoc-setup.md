@@ -165,7 +165,11 @@ Pandoc can convert all of the following into markdown. Verified against Pandoc 3
 | **Org-mode** | `.org` | Emacs format. |
 | **AsciiDoc** | `.asciidoc` | Technical documentation format. |
 
-**Cannot read:** PDF (write-only for pandoc), images (no OCR), binary formats not listed above.
+**Cannot read (pandoc):** PDF, images, and binary formats not listed above.
+
+**PDF → Markdown:** Do NOT use pandoc for this. Claude reads PDFs natively.
+Give Claude the file path and ask it to convert to markdown. Claude uses its built-in
+Read tool to extract the content and write a clean `.md` file — no additional software needed.
 
 **Excel notes:** Pandoc reads `.xlsx` directly — no need to save as CSV first. Each worksheet
 becomes a separate section with a markdown table. Complex formatting (merged cells, formulas,
@@ -204,11 +208,23 @@ charts) is dropped — only the data values come through. That's usually what yo
 
 ---
 
-## Word Documents → Markdown (bringing existing content into the system)
+## Bringing Existing Documents into the System
 
-Any Word document that contains business procedures, SOPs, or ISO documentation
+Any document containing business procedures, SOPs, or ISO documentation
 should be converted to markdown before being stored in this system. Markdown files
-are readable by AI agents; Word files are not.
+are readable by AI agents; binary files (Word, Excel, PDF) are not readable by pandoc,
+and Word/Excel are not readable by Claude directly.
+
+**Format routing:**
+
+| File type | How to convert to markdown |
+|---|---|
+| `.docx` (Word) | `bash tools/convert.sh docx-to-md file.docx` |
+| `.xlsx` (Excel) | `bash tools/convert.sh xlsx-to-md file.xlsx` |
+| `.pptx` (PowerPoint) | `bash tools/convert.sh pptx-to-md file.pptx` |
+| `.pdf` | Give Claude the file path — Claude reads PDFs natively and writes the markdown |
+| `.csv` / `.tsv` | `bash tools/convert.sh csv-to-md file.csv` |
+| `.html` / `.rtf` / `.odt` | `bash tools/convert.sh any-to-md file.ext` |
 
 **Conversion process:**
 1. Run `tools/convert.sh docx-to-md yourfile.docx`
