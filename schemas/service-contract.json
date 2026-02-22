@@ -1,0 +1,177 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Service contracts schema — recurring maintenance agreements, scheduled visits, and renewals. Source of truth for what services a customer has contracted for, when visits should happen, and how to bill. Links to schemas/schedule.json for work orders and schemas/crm.json for customer contact data.",
+
+  "service_contracts": [
+    {
+      "contract_id": "SC-2026-001",
+      "contract_number": "2026-001",
+      "$contract_number_note": "Human-readable sequential number. Displayed on renewal letters and invoices.",
+      "created_at": "",
+      "updated_at": "",
+
+      "customer_id": "",
+      "$customer_id_note": "Links to crm.json contacts[]. Pull customer name, phone, and billing address from there.",
+
+      "service_location_id": "",
+      "$service_location_note": "Where service visits take place. May differ from customer billing address.",
+      "service_location_address": {
+        "line1": "", "line2": "", "city": "", "state": "", "postal_code": "", "country": "US",
+        "access_instructions": "",
+        "$access_note": "Gate codes, key box combinations, dog warnings, etc. Passed to technician at dispatch."
+      },
+
+      "contract_type": "hvac | pest_control | lawn_care | pool | cleaning | other",
+      "$contract_type_note": "Used for grouping in MRR reports and renewal dashboards. Add custom types in metadata.",
+
+      "status": "draft | pending_activation | active | paused | renewal_pending | expired | canceled",
+      "$status_note": "draft=not yet confirmed by owner. pending_activation=approved but term_start_date in future. active=live and billing. paused=temporarily on hold. renewal_pending=within renewal window but still active. expired=lapsed. canceled=terminated early.",
+
+      "term_start_date": "",
+      "term_end_date": "",
+      "initial_term_months": 12,
+      "$term_note": "12=annual contract. 6=semi-annual. 1=monthly rolling. Used to calculate new term on renewal.",
+
+      "auto_renew": true,
+      "$auto_renew_note": "If true and no rejection received, contract renews automatically at term_end_date. If false, requires explicit customer acceptance.",
+
+      "billing_pattern": "flat_monthly | per_visit | prepaid_annual | hybrid",
+      "$billing_pattern_note": "flat_monthly: same invoice each month regardless of visits. per_visit: invoice after each completed visit. prepaid_annual: one invoice at activation for full term. hybrid: monthly flat fee plus parts/extras billed per visit.",
+
+      "billing_interval": "monthly | quarterly | annually | per_visit",
+      "billing_day_of_month": 1,
+      "$billing_day_note": "Day of month to generate recurring invoices for flat_monthly and hybrid. Defaults to 1.",
+
+      "service_window_preferences": {
+        "preferred_days_of_week": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+        "time_window_start": "08:00",
+        "time_window_end": "17:00",
+        "$note": "Customer's preferred scheduling window. Used when generating occurrences and assigning technician slots."
+      },
+
+      "pricing_summary": {
+        "expected_annual_revenue": 0,
+        "expected_mrr": 0,
+        "$mrr_note": "For flat_monthly: monthly price. For prepaid_annual: annual price / 12. For per_visit: estimate based on frequency and unit_price. Used in dashboard MRR reporting.",
+        "discount_percent": 0
+      },
+
+      "quickbooks_sync_status": "never | pending | synced | error",
+      "quickbooks_last_invoice_id": "",
+      "quickbooks_customer_ref": "",
+      "$qb_note": "QuickBooks CustomerRef.value. Set when customer record exists in QB. Used for all invoice creation API calls.",
+
+      "notes_internal": "",
+      "$internal_note": "Internal notes about this contract — not shown to customer.",
+      "notes_customer_visible": "",
+      "tags": []
+    }
+  ],
+
+  "contract_line_items": [
+    {
+      "line_item_id": "CLI-001",
+      "contract_id": "",
+
+      "service_code": "",
+      "$service_code_note": "Internal SKU for this service. Maps to QuickBooks ItemRef.value on invoices. Configure in pricebook.",
+
+      "description": "",
+      "$description_note": "Plain-language description shown on invoices and renewal letters. E.g. 'Annual HVAC Tune-Up — Heating System'.",
+
+      "frequency": "weekly | biweekly | monthly | quarterly | semiannual | annual | ad_hoc",
+      "$frequency_note": "How often this service is performed. Drives occurrence generation. ad_hoc means visits are scheduled on demand, not on a fixed schedule.",
+
+      "occurrences_per_term": 1,
+      "$occurrences_note": "Total planned visits for this line item in the contract term. Verified against frequency * term_months. E.g. quarterly * 12-month term = 4.",
+
+      "unit_price": 0,
+      "$unit_price_note": "Price per visit for bill_per_visit mode. For included_in_flat_fee, this is the allocated value for reporting only.",
+
+      "billing_mode": "included_in_flat_fee | bill_per_visit | bill_parts_only",
+      "$billing_mode_note": "included_in_flat_fee: covered by the monthly/annual price. bill_per_visit: creates a new invoice line per completed visit. bill_parts_only: labor is included, only materials billed separately on each visit.",
+
+      "estimated_duration_minutes": 60,
+
+      "technician_role": "",
+      "$technician_role_note": "Skill code required to perform this service. Must match field_workers[].skills[].code in schedule.json. E.g. 'hvac_tech', 'pest_tech', 'pool_tech'.",
+
+      "location_id_override": "",
+      "$location_override_note": "Only set if this line item covers a different location than the contract default. Useful for multi-property customers.",
+
+      "notes": ""
+    }
+  ],
+
+  "contract_occurrences": [
+    {
+      "occurrence_id": "OCC-001",
+      "created_at": "",
+      "updated_at": "",
+      "contract_id": "",
+      "line_item_id": "",
+
+      "scheduled_date": "",
+      "$scheduled_date_note": "Target service date. Generated from line item frequency and term_start_date at contract activation. May be updated by dispatcher without changing the original_planned_date.",
+
+      "original_planned_date": "",
+      "$original_note": "Preserved from initial generation even if the date is later moved. Used for adherence reporting.",
+
+      "scheduled_time_window": {
+        "start": "08:00",
+        "end": "12:00",
+        "$note": "Customer-facing time window. Broader than the technician's actual scheduled slot."
+      },
+
+      "status": "planned | scheduled | completed | skipped | canceled | failed",
+      "$status_note": "planned=occurrence exists but no work order yet. scheduled=work order created. completed=visit done and signed off. skipped=visit not performed this term (reason recorded). canceled=removed from the schedule. failed=work order created, technician went, could not complete.",
+
+      "work_order_id": "",
+      "$work_order_note": "Links to schedule.json jobs[] when a work order is created for this occurrence. Set during the 30-day rolling window conversion.",
+
+      "technician_ids": [],
+      "$technician_note": "Field worker IDs from schedule.json field_workers[]. Populated when dispatched.",
+
+      "reason_code": "none | customer_vacation | no_access | weather | equipment_failure | other",
+
+      "invoice_id": "",
+      "$invoice_note": "Set when a per-visit invoice is created (billing_mode = bill_per_visit). Links to QuickBooks invoice ID.",
+
+      "notes": ""
+    }
+  ],
+
+  "contract_renewals": [
+    {
+      "renewal_id": "RNW-001",
+      "contract_id": "",
+
+      "prior_term_start": "",
+      "prior_term_end": "",
+      "new_term_start": "",
+      "new_term_end": "",
+
+      "renewal_type": "auto | manual",
+      "$renewal_type_note": "auto=contract renews without customer action (customer agreed in original terms). manual=owner must send an offer and customer must explicitly accept.",
+
+      "price_change_percent": 0,
+      "$price_change_note": "Positive = price increase. E.g. 5 = 5% increase. Applied to contract_line_items[].unit_price when renewal is accepted.",
+
+      "visits_completed_prior_term": 0,
+      "visits_planned_prior_term": 0,
+      "completion_rate_percent": 0,
+      "$completion_note": "Calculated at renewal time. Used in renewal offer messaging: 'We completed X of Y visits this term.'",
+
+      "draft_renewal_message": "",
+      "$draft_note": "AI-generated renewal offer text for owner review and editing. Includes prior term summary, value highlights, new term pricing, and call to action.",
+
+      "status": "pending | sent_to_customer | accepted | rejected | lapsed",
+      "$renewal_status_note": "pending=not yet sent. sent_to_customer=offer delivered. accepted=customer confirmed new term. rejected=customer declined. lapsed=contract expired without a decision.",
+
+      "triggered_at": "",
+      "sent_at": "",
+      "decided_at": "",
+      "notes": ""
+    }
+  ]
+}

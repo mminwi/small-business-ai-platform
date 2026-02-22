@@ -1,0 +1,176 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Asset & equipment tracking schema — customer-owned equipment, service history per work order, and supporting documents. Source of truth for what equipment exists at each customer location, its condition, warranty status, and full service history. Links to schemas/schedule.json for work orders and schemas/crm.json for customer data.",
+
+  "assets": [
+    {
+      "asset_id": "ASSET-001",
+      "created_at": "",
+      "updated_at": "",
+
+      "customer_id": "",
+      "$customer_id_note": "Links to crm.json contacts[]. Pull customer name, phone, and billing address from there.",
+
+      "service_location_id": "",
+      "$service_location_note": "Physical location of the asset. May differ from billing address.",
+      "service_location_address": {
+        "line1": "", "line2": "", "city": "", "state": "", "postal_code": "", "country": "US",
+        "unit_identifier": "",
+        "$unit_note": "For multi-unit properties: 'Apt 3B', 'Suite 210', 'Building 5 – Roof RTU 3'."
+      },
+
+      "asset_type": "hvac | vehicle | pool_equipment | appliance | elevator | generic",
+      "subtype": "",
+      "$subtype_note": "More specific category within asset_type. HVAC examples: furnace, heat_pump, condenser, air_handler, mini_split. Pool examples: pump, filter, heater, salt_cell. Vehicle: truck, van, sedan.",
+
+      "display_name": "",
+      "$display_name_note": "Short human-readable label. E.g. 'Carrier 3-Ton AC – Garage' or '2018 Ford F-150 (Truck 3)'. Used everywhere the asset appears in the UI.",
+
+      "status": "active | inactive | retired",
+      "$status_note": "active=in service and receiving visits. inactive=not in use but not scrapped. retired=removed from service; no future visits or contract coverage expected.",
+
+      "manufacturer": "",
+      "model": "",
+      "serial_number": "",
+      "year_of_manufacture": null,
+      "install_date": "",
+      "purchase_date": "",
+
+      "asset_tag": "",
+      "$asset_tag_note": "Human-readable tag ID printed on the barcode or QR label affixed to the equipment.",
+      "barcode_value": "",
+      "$barcode_note": "Raw value encoded in the barcode or QR code. May differ from asset_tag if using external label systems.",
+
+      "current_usage_metric": null,
+      "$usage_metric_note": "Current mileage, hours, or cycle count. Update at each service visit for usage-tracked assets.",
+      "usage_unit": "miles | hours | cycles | none",
+
+      "last_service_date": "",
+      "next_service_due_date": "",
+      "$next_service_note": "Date when next routine service is recommended. Set or updated at each work order completion based on asset type and interval.",
+
+      "condition_rating": null,
+      "$condition_note": "1=poor (replace soon), 2=fair (monitor closely), 3=average, 4=good, 5=excellent. Updated at each service visit by the technician.",
+      "age_category": "new | mid_life | end_of_life",
+      "$age_note": "Rough lifecycle stage. new=0-5 yrs typical, mid_life=5-12 yrs typical, end_of_life=past manufacturer expected life. Set manually or derived from year_of_manufacture and asset_type norms.",
+      "replacement_recommended": false,
+      "$replacement_note": "True when technician has flagged this unit for replacement. Triggers owner alert and replacement quote prompt.",
+
+      "manufacturer_warranty_expires_on": "",
+      "extended_warranty_expires_on": "",
+      "in_warranty": false,
+      "$warranty_note": "in_warranty is recalculated at each service visit from today vs expiry dates. When true, flag work as potential warranty claim before billing.",
+
+      "contract_ids": [],
+      "$contract_ids_note": "Service contract IDs from service-contract.json that currently cover this asset. Updated when contracts are activated or terminated.",
+
+      "attributes": [
+        {
+          "key": "",
+          "value": "",
+          "unit": "",
+          "source": "manual | scanned | imported",
+          "$attribute_note": "Flexible fields for industry-specific data. HVAC examples: refrigerant_type (R-410A), tonnage (3), filter_size (16x20x1), seer_rating (16), fuel_type (gas). Vehicle examples: vin, license_plate, engine_size, transmission_type. Pool examples: pump_hp (1.5), pool_volume_gallons (15000), sanitizer_type (chlorine)."
+        }
+      ],
+
+      "notes": "",
+      "tags": []
+    }
+  ],
+
+  "asset_service_history": [
+    {
+      "history_id": "ASH-001",
+      "created_at": "",
+      "updated_at": "",
+
+      "asset_id": "",
+      "work_order_id": "",
+      "$work_order_note": "Links to schedule.json jobs[]. Required — every service history entry must be tied to a work order.",
+
+      "customer_id": "",
+      "service_location_id": "",
+
+      "service_date": "",
+      "technician_ids": [],
+      "$technician_note": "Field worker IDs from schedule.json field_workers[].",
+
+      "summary": "",
+      "$summary_note": "Short plain-language summary of work performed. AI-generated from technician notes and line items. E.g. 'Annual HVAC tune-up: cleaned coils, checked refrigerant, replaced filter. Unit in good condition.' Shown in the equipment brief at the next visit.",
+
+      "problem_description": "",
+      "$problem_note": "What the customer reported — the symptom or complaint that prompted the visit.",
+      "cause_description": "",
+      "$cause_note": "Root cause identified by the technician.",
+      "resolution_description": "",
+      "$resolution_note": "What was done: repairs made, parts replaced, adjustments performed, readings corrected.",
+
+      "usage_at_service": null,
+      "usage_unit": "miles | hours | cycles | none",
+      "$usage_note": "Odometer reading, runtime hours, or cycle count recorded at time of service. Used to track usage-based maintenance intervals.",
+
+      "readings": [
+        {
+          "name": "",
+          "value": null,
+          "unit": "",
+          "$readings_note": "Measurements taken during service. HVAC examples: suction_pressure (PSI), head_pressure (PSI), superheat (°F), subcool (°F), return_air_temp (°F), supply_air_temp (°F), delta_t (°F). Vehicle: oil_pressure (PSI), battery_voltage (V), brake_pad_thickness (mm), tire_tread_depth (32nds). Pool: chlorine_ppm, ph, alkalinity_ppm, salt_ppm."
+        }
+      ],
+
+      "parts_installed": [
+        {
+          "part_id": "",
+          "$part_id_note": "Links to inventory.json parts[] if the part is tracked in inventory. Leave blank for one-off parts not in the system.",
+          "part_name": "",
+          "quantity": 1,
+          "part_serial_number": "",
+          "$part_serial_note": "For serialized parts. Enables warranty lookups and recall queries ('all assets with Part X installed').",
+          "under_part_warranty": false,
+          "$part_warranty_note": "True if the installed part carries its own manufacturer warranty."
+        }
+      ],
+
+      "labor_hours": null,
+
+      "condition_rating_after_service": null,
+      "$condition_after_note": "Technician's assessment of equipment condition after service. Copied to asset.condition_rating. 1=poor, 3=fair, 5=excellent.",
+
+      "follow_up_recommended": false,
+      "next_recommended_service_date": "",
+      "$next_service_note": "Tech's recommendation for when this asset should be serviced again. Copied to asset.next_service_due_date on work order close.",
+
+      "deferred_items": [],
+      "$deferred_note": "Issues observed but not addressed this visit. Each entry is a short string. E.g. 'Heat exchanger has hairline crack — recommend replacement before next heating season.' Surfaced prominently in the next visit's equipment brief.",
+
+      "attachments": [],
+      "$attachments_note": "IDs of asset_documents[] entries captured during this visit: job-site photos, readings printouts, nameplate photos."
+    }
+  ],
+
+  "asset_documents": [
+    {
+      "document_id": "ADOC-001",
+
+      "asset_id": "",
+      "customer_id": "",
+      "service_location_id": "",
+
+      "document_type": "photo | installation_photo | nameplate_photo | wiring_diagram | manual | warranty_card | other",
+      "$document_type_note": "nameplate_photo is the most valuable type for new assets — captures manufacturer, model, serial, and specs from the label on the equipment.",
+
+      "title": "",
+      "description": "",
+
+      "storage_provider": "google_drive | sharepoint | other",
+      "storage_url": "",
+      "$storage_note": "Full URL or file ID to the document in the configured storage provider. Must be accessible to staff with appropriate permissions.",
+
+      "file_mime_type": "",
+      "tags": [],
+      "uploaded_at": "",
+      "uploaded_by": ""
+    }
+  ]
+}
