@@ -10,7 +10,7 @@
       "created_at": "",
       "updated_at": "",
       "customer_id": "",
-      "$customer_id_note": "Links to crm.json contacts[]. Pull customer name, phone, and preferred_channel from there.",
+      "$customer_id_note": "Links to crm.json companies[] for business customers. For individual consumers with no company, links to crm.json contacts[] instead. Pull customer name, phone, and preferred_channel from there.",
       "service_location": {
         "label": "",
         "$label_note": "Optional short label — e.g. 'Main house', 'Rental unit'.",

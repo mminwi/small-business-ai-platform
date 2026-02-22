@@ -5,8 +5,10 @@
   "invoice_id": "INV-2026-001",
   "$invoice_id_note": "Format: [invoice_prefix][year]-[sequential number]. Prefix configured per customer.",
 
-  "project_id": "PROJ-2026-001",
-  "client_id": "CLIENT-001",
+  "job_id": "JOB-2026-001",
+  "$job_id_note": "Links to schedule.json jobs[]. Null if invoice is not tied to a scheduled job (e.g. deposit-only or standalone invoice).",
+  "company_id": "CO-001",
+  "$company_id_note": "Links to crm.json companies[]. For individual consumers with no company, links to crm.json contacts[] instead.",
   "linked_estimate_id": "OPP-2026-001",
   "$linked_estimate_note": "Null if no estimate exists. Links to opportunity.json for WBS and budget hours.",
 

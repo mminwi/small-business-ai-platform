@@ -11,7 +11,7 @@
       "updated_at": "",
 
       "customer_id": "",
-      "$customer_id_note": "Links to crm.json contacts[]. Pull customer name, phone, and billing address from there.",
+      "$customer_id_note": "Links to crm.json companies[] for business customers. For individual consumers with no company, links to crm.json contacts[] instead. Pull customer name, phone, and billing address from there.",
 
       "service_location_id": "",
       "$service_location_note": "Where service visits take place. May differ from customer billing address.",
@@ -127,7 +127,7 @@
       "$status_note": "planned=occurrence exists but no work order yet. scheduled=work order created. completed=visit done and signed off. skipped=visit not performed this term (reason recorded). canceled=removed from the schedule. failed=work order created, technician went, could not complete.",
 
       "work_order_id": "",
-      "$work_order_note": "Links to schedule.json jobs[] when a work order is created for this occurrence. Set during the 30-day rolling window conversion.",
+      "$work_order_note": "Links to work-order.json work_orders[] when a work order is created for this occurrence. Set during the 30-day rolling window conversion.",
 
       "technician_ids": [],
       "$technician_note": "Field worker IDs from schedule.json field_workers[]. Populated when dispatched.",

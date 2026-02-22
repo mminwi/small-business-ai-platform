@@ -14,7 +14,13 @@
     "workflow_templates_selected": []
   },
 
+  "company_id": "",
+  "$company_id_note": "Links to crm.json companies[]. Set when the customer exists in CRM. Pull billing address and QB customer ID from there.",
+  "primary_contact_id": "",
+  "$primary_contact_id_note": "Links to crm.json contacts[]. The main point of contact for this opportunity.",
+
   "customer": {
+    "$comment": "Snapshot for pre-CRM leads or when company_id is not yet set. If company_id is populated, CRM is the source of truth — do not edit here.",
     "organization": "",
     "type": "prime | agency | commercial",
     "contacts": [

@@ -11,7 +11,7 @@
       "updated_at": "",
 
       "customer_id": "",
-      "$customer_id_note": "Links to crm.json contacts[]. Pull name, phone, preferred_channel, and billing address from there.",
+      "$customer_id_note": "Links to crm.json companies[] for business customers. For individual consumers with no company, links to crm.json contacts[] instead. Pull name, phone, preferred_channel, and billing address from there.",
       "appointment_id": "",
       "$appointment_id_note": "Links to schedule.json appointments[]. Set when this WO was created from a dispatched appointment. Null if WO created independently.",
 
