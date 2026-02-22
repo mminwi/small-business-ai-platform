@@ -150,10 +150,8 @@ MIT. Use it, modify it, build on it. See [LICENSE](LICENSE).
 
 ## About
 
-Built by [Mike Maier](https://www.credopd.com) — Director of Engineering at
-Credo Product Development, a 12-person engineering firm in the US. Credo is the
-first test bed for this framework.
+Built by [Mike Maier](https://github.com/mminwi).
 
-The framework is open source. If your business is too complex to set this up
-yourself, implementation services are available — [open an issue](https://github.com/mminwi/small-business-ai-platform/issues)
+The framework is open source — use it, modify it, build on it under the MIT license.
+If you want help implementing it for your business, [open an issue](https://github.com/mminwi/small-business-ai-platform/issues)
 or reach out directly.
