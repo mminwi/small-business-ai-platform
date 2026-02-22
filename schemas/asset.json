@@ -87,7 +87,7 @@
 
       "asset_id": "",
       "work_order_id": "",
-      "$work_order_note": "Links to schedule.json jobs[]. Required — every service history entry must be tied to a work order.",
+      "$work_order_note": "Links to work-order.json work_orders[]. Required — every service history entry must be tied to a work order.",
 
       "customer_id": "",
       "service_location_id": "",
