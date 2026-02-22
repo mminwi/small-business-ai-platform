@@ -3,11 +3,17 @@
 # Wraps pandoc + Eisvogel for all common conversion directions.
 #
 # Usage:
-#   bash tools/convert.sh md-to-pdf   input.md [output.pdf]
-#   bash tools/convert.sh md-to-docx  input.md [output.docx]
-#   bash tools/convert.sh docx-to-md  input.docx [output.md]
+#   bash tools/convert.sh md-to-pdf   input.md      [output.pdf]    # Markdown → PDF (Eisvogel)
+#   bash tools/convert.sh md-to-docx  input.md      [output.docx]   # Markdown → Word
+#   bash tools/convert.sh docx-to-md  input.docx    [output.md]     # Word → Markdown
+#   bash tools/convert.sh xlsx-to-md  input.xlsx    [output.md]     # Excel → Markdown
+#   bash tools/convert.sh csv-to-md   input.csv     [output.md]     # CSV → Markdown table
+#   bash tools/convert.sh pptx-to-md  input.pptx    [output.md]     # PowerPoint → Markdown
+#   bash tools/convert.sh html-to-md  input.html    [output.md]     # HTML → Markdown
+#   bash tools/convert.sh rtf-to-md   input.rtf     [output.md]     # RTF → Markdown
+#   bash tools/convert.sh any-to-md   input.xyz     [output.md]     # Any supported format → Markdown
 #
-# See tools/pandoc-setup.md for installation instructions.
+# See tools/pandoc-setup.md for full format list and installation instructions.
 
 set -e
 
@@ -79,13 +85,85 @@ docx_to_md() {
   echo "Converting: $input → $output"
   echo "  (embedded images → $media_dir/)"
   "$PANDOC" "$input" --extract-media="$media_dir" -o "$output"
+  _review_checklist "$output"
+}
+
+xlsx_to_md() {
+  local input="$1"
+  local output="${2:-${input%.xlsx}.md}"
+  check_tools
+  echo "Converting: $input → $output"
+  echo "  (each worksheet becomes a markdown table)"
+  "$PANDOC" "$input" -o "$output"
   echo "Done: $output"
   echo ""
   echo "Review checklist:"
-  echo "  [ ] Headings look correct"
+  echo "  [ ] Each sheet/table has expected columns and data"
+  echo "  [ ] Merged cells will have lost their merge — check data is intact"
+  echo "  [ ] Formulas are replaced by their last calculated value"
+  echo "  [ ] Charts are dropped — data only"
+}
+
+csv_to_md() {
+  local input="$1"
+  local output="${2:-${input%.csv}.md}"
+  check_tools
+  echo "Converting: $input → $output"
+  "$PANDOC" "$input" -o "$output"
+  echo "Done: $output"
+}
+
+pptx_to_md() {
+  local input="$1"
+  local output="${2:-${input%.pptx}.md}"
+  local media_dir
+  media_dir="$(dirname "$output")/media"
+  check_tools
+  echo "Converting: $input → $output"
+  echo "  (slide titles → headings, bullets → lists, images → $media_dir/)"
+  "$PANDOC" "$input" --extract-media="$media_dir" -o "$output"
+  _review_checklist "$output"
+}
+
+html_to_md() {
+  local input="$1"
+  local output="${2:-${input%.html}.md}"
+  check_tools
+  echo "Converting: $input → $output"
+  "$PANDOC" "$input" -o "$output"
+  echo "Done: $output"
+}
+
+rtf_to_md() {
+  local input="$1"
+  local output="${2:-${input%.rtf}.md}"
+  check_tools
+  echo "Converting: $input → $output"
+  "$PANDOC" "$input" -o "$output"
+  _review_checklist "$output"
+}
+
+any_to_md() {
+  local input="$1"
+  local ext="${input##*.}"
+  local output="${2:-${input%.*}.md}"
+  local media_dir
+  media_dir="$(dirname "$output")/media"
+  check_tools
+  echo "Converting: $input → $output  (auto-detecting format from .$ext)"
+  "$PANDOC" "$input" --extract-media="$media_dir" -o "$output"
+  _review_checklist "$output"
+}
+
+_review_checklist() {
+  local output="$1"
+  echo "Done: $output"
+  echo ""
+  echo "Review checklist:"
+  echo "  [ ] Headings and structure look correct"
   echo "  [ ] Tables converted cleanly (merged cells may need manual fix)"
-  echo "  [ ] Remove any leftover tracked-change markup"
-  echo "  [ ] Move file to appropriate /procedures/ subfolder"
+  echo "  [ ] Remove any tracked-change or revision markup artifacts"
+  echo "  [ ] Move file to appropriate /procedures/ subfolder when clean"
 }
 
 # ---------------------------------------------------------------------------
@@ -108,16 +186,48 @@ case "$COMMAND" in
     if [ -z "$INPUT" ]; then echo "Usage: convert.sh docx-to-md input.docx [output.md]"; exit 1; fi
     docx_to_md "$INPUT" "$OUTPUT"
     ;;
+  xlsx-to-md)
+    if [ -z "$INPUT" ]; then echo "Usage: convert.sh xlsx-to-md input.xlsx [output.md]"; exit 1; fi
+    xlsx_to_md "$INPUT" "$OUTPUT"
+    ;;
+  csv-to-md)
+    if [ -z "$INPUT" ]; then echo "Usage: convert.sh csv-to-md input.csv [output.md]"; exit 1; fi
+    csv_to_md "$INPUT" "$OUTPUT"
+    ;;
+  pptx-to-md)
+    if [ -z "$INPUT" ]; then echo "Usage: convert.sh pptx-to-md input.pptx [output.md]"; exit 1; fi
+    pptx_to_md "$INPUT" "$OUTPUT"
+    ;;
+  html-to-md)
+    if [ -z "$INPUT" ]; then echo "Usage: convert.sh html-to-md input.html [output.md]"; exit 1; fi
+    html_to_md "$INPUT" "$OUTPUT"
+    ;;
+  rtf-to-md)
+    if [ -z "$INPUT" ]; then echo "Usage: convert.sh rtf-to-md input.rtf [output.md]"; exit 1; fi
+    rtf_to_md "$INPUT" "$OUTPUT"
+    ;;
+  any-to-md)
+    if [ -z "$INPUT" ]; then echo "Usage: convert.sh any-to-md input.file [output.md]"; exit 1; fi
+    any_to_md "$INPUT" "$OUTPUT"
+    ;;
   help|*)
     echo ""
     echo "convert.sh — Document conversion for Small Business AI Platform"
     echo ""
-    echo "Usage:"
-    echo "  bash tools/convert.sh md-to-pdf   input.md [output.pdf]   # Markdown → PDF (Eisvogel)"
-    echo "  bash tools/convert.sh md-to-docx  input.md [output.docx]  # Markdown → Word"
-    echo "  bash tools/convert.sh docx-to-md  input.docx [output.md]  # Word → Markdown"
+    echo "  → Markdown (ingest existing documents into the system):"
+    echo "  bash tools/convert.sh docx-to-md  input.docx   [output.md]"
+    echo "  bash tools/convert.sh xlsx-to-md  input.xlsx   [output.md]"
+    echo "  bash tools/convert.sh csv-to-md   input.csv    [output.md]"
+    echo "  bash tools/convert.sh pptx-to-md  input.pptx   [output.md]"
+    echo "  bash tools/convert.sh html-to-md  input.html   [output.md]"
+    echo "  bash tools/convert.sh rtf-to-md   input.rtf    [output.md]"
+    echo "  bash tools/convert.sh any-to-md   input.xyz    [output.md]"
     echo ""
-    echo "See tools/pandoc-setup.md for installation instructions."
+    echo "  From Markdown (produce deliverables):"
+    echo "  bash tools/convert.sh md-to-pdf   input.md     [output.pdf]"
+    echo "  bash tools/convert.sh md-to-docx  input.md     [output.docx]"
+    echo ""
+    echo "See tools/pandoc-setup.md for full format list and install instructions."
     echo ""
     ;;
 esac

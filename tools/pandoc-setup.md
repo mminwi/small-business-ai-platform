@@ -4,10 +4,10 @@ This guide covers installation of Pandoc and the Eisvogel PDF template on Window
 Once installed, the `convert.sh` script in this folder handles all document conversions.
 
 **Why this matters:** All business logic in this platform lives in markdown files.
-Pandoc converts those markdown files into professional PDFs, Word documents, or other
-formats when you need to send something to a client. It also converts Word documents
-*into* markdown, which is how you bring existing Word-based content (procedures, SOPs,
-ISO documents) into the system.
+Pandoc converts those markdown files into professional PDFs or Word documents for clients.
+It also converts a wide range of existing file types *into* markdown — Word docs, Excel
+spreadsheets, HTML, PowerPoint, CSV, RTF, and more. Once something is markdown, the AI
+can read it, reason about it, and maintain it.
 
 ---
 
@@ -113,30 +113,24 @@ need to manually install packages via MiKTeX Console → Packages.
 
 ## Conversion Reference
 
-Use `tools/convert.sh` in this repo for all conversions. Direct pandoc commands for reference:
+Use `tools/convert.sh` in this repo. It handles paths automatically — no manual PATH setup needed.
 
-### Markdown → PDF (Eisvogel template)
 ```bash
-pandoc input.md --template eisvogel --pdf-engine=pdflatex -o output.pdf \
-  -V colorlinks=true -V linkcolor=blue -V "geometry:margin=1in"
+bash tools/convert.sh md-to-pdf    input.md       [output.pdf]
+bash tools/convert.sh md-to-docx   input.md       [output.docx]
+bash tools/convert.sh docx-to-md   input.docx     [output.md]
+bash tools/convert.sh xlsx-to-md   input.xlsx     [output.md]
+bash tools/convert.sh csv-to-md    input.csv      [output.md]
+bash tools/convert.sh pptx-to-md   input.pptx     [output.md]
+bash tools/convert.sh html-to-md   input.html     [output.md]
+bash tools/convert.sh rtf-to-md    input.rtf      [output.md]
+bash tools/convert.sh any-to-md    input.xyz      [output.md]
 ```
 
-### Markdown → Word (.docx)
-```bash
-pandoc input.md -o output.docx
-```
+`any-to-md` works for any supported input format — pandoc detects the format from the file extension.
 
-### Word (.docx) → Markdown
-```bash
-pandoc input.docx -o output.md
-```
-Strip embedded images and extract them separately:
-```bash
-pandoc input.docx --extract-media=./media -o output.md
-```
-
-### Markdown → PDF with title page metadata
-Add a YAML front matter block at the top of your markdown file:
+### Markdown → PDF with title page
+Add YAML front matter at the top of your `.md` file:
 ```yaml
 ---
 title: "Invoicing Procedure"
@@ -145,7 +139,53 @@ author: "Your Company Name"
 date: "2026-02-22"
 ---
 ```
-Then run the standard markdown → PDF command. Eisvogel renders the title page automatically.
+Eisvogel renders a title page automatically when these fields are present.
+
+---
+
+## Supported Input Formats (→ Markdown)
+
+Pandoc can convert all of the following into markdown. Verified against Pandoc 3.9.
+
+| Format | Extension | Notes |
+|---|---|---|
+| **Word** | `.docx` | Best supported. Tables, headings, lists convert cleanly. |
+| **Excel** | `.xlsx` | Each sheet becomes a markdown table. Good for rate sheets, BOMs, checklists. |
+| **PowerPoint** | `.pptx` | Slide titles become headings; bullet text becomes lists. Images dropped. |
+| **CSV** | `.csv` | Converts to a single markdown table. |
+| **TSV** | `.tsv` | Same as CSV. |
+| **HTML** | `.html` | Very clean conversion. |
+| **RTF** | `.rtf` | Rich Text Format — older Word-compatible format. |
+| **OpenDocument** | `.odt` | LibreOffice Writer format. |
+| **EPUB** | `.epub` | Ebooks. |
+| **LaTeX** | `.tex` | Academic/technical documents. |
+| **reStructuredText** | `.rst` | Python ecosystem docs. |
+| **Jupyter Notebook** | `.ipynb` | Code + prose notebooks. |
+| **MediaWiki** | `.mediawiki` | Wikipedia-style markup. |
+| **Org-mode** | `.org` | Emacs format. |
+| **AsciiDoc** | `.asciidoc` | Technical documentation format. |
+
+**Cannot read:** PDF (write-only for pandoc), images (no OCR), binary formats not listed above.
+
+**Excel notes:** Pandoc reads `.xlsx` directly — no need to save as CSV first. Each worksheet
+becomes a separate section with a markdown table. Complex formatting (merged cells, formulas,
+charts) is dropped — only the data values come through. That's usually what you want.
+
+---
+
+## Supported Output Formats (from Markdown)
+
+| Format | Extension | Use case |
+|---|---|---|
+| **PDF** | `.pdf` | Client deliverables, proposals, procedures |
+| **Word** | `.docx` | Editable documents for clients who need Word |
+| **HTML** | `.html` | Web publishing |
+| **EPUB** | `.epub` | Ebook distribution |
+| **PowerPoint** | `.pptx` | Slide decks from markdown outline |
+| **OpenDocument** | `.odt` | LibreOffice |
+| **RTF** | `.rtf` | Legacy compatibility |
+| **LaTeX** | `.tex` | Academic publishing |
+| **Plain text** | `.txt` | Stripped of all formatting |
 
 ---
 
