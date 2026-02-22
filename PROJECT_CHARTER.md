@@ -3,7 +3,7 @@
 
 **Version:** 1.0  
 **Date:** February 2026  
-**Author:** Mike — Director of Mechanical Engineering, Credo Product Development  
+**Author:** Mike Maier
 **Status:** Draft — Pending Claude Code Development
 
 ---
