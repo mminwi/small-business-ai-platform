@@ -1,0 +1,198 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Online / inbound customer booking schema — services offered, business policy, customer bookings, and notification records. Source of truth for what customers can book online and the state of each booking request. Confirmed bookings create records in schemas/schedule.json. Customer contact data lives in schemas/crm.json.",
+
+  "booking_services": [
+    {
+      "service_id": "SVC-001",
+      "created_at": "",
+      "updated_at": "",
+
+      "name": "",
+      "$name_note": "Displayed to the customer on the booking page. E.g. '60-Min Deep Tissue Massage', 'Dog Bath & Trim', 'Haircut & Style'.",
+
+      "category": "",
+      "$category_note": "Groups services on the booking page. E.g. 'Hair', 'Massage', 'Training', 'Pets', 'Trades'. Freeform — configure per business.",
+
+      "description_markdown": "",
+      "$description_note": "Short description shown on the booking page. Keep it customer-facing and benefit-focused.",
+
+      "duration_minutes": 60,
+      "$duration_note": "Length of the appointment itself. Does not include buffers. Customer sees this duration.",
+
+      "base_price": 0,
+      "currency": "USD",
+
+      "staff_ids": [],
+      "$staff_ids_note": "IDs of staff from schedule.json field_workers[] who can perform this service. Empty array means any qualified staff member. For solo operators, this field is unused.",
+
+      "buffer_before_minutes": 0,
+      "$buffer_before_note": "Internal prep time before the appointment. Blocked on the staff calendar but not shown to customers. E.g. 10 minutes to set up a massage table.",
+
+      "buffer_after_minutes": 0,
+      "$buffer_after_note": "Internal cleanup/travel time after the appointment. Prevents back-to-back stacking. E.g. 15 minutes to clean a grooming station.",
+
+      "requires_deposit": false,
+      "deposit_amount": 0,
+      "deposit_type": "fixed | percentage",
+      "$deposit_note": "For fixed: deposit_amount is a dollar amount. For percentage: deposit_amount is the percentage (e.g. 25 = 25% of base_price). Collected at booking time via payment processor.",
+
+      "allow_online_booking": true,
+      "$allow_online_note": "Set to false to hide from the booking page without deleting the service. Useful for seasonal services or services that are fully booked.",
+
+      "active": true,
+      "$active_note": "False = service is archived. Hidden from everything including admin views.",
+
+      "notes_internal": "",
+      "tags": []
+    }
+  ],
+
+  "booking_policy": {
+    "$comment": "One record per business. Defines booking window, cancellation rules, and confirmation behavior. Override specific fields per service where needed.",
+
+    "policy_id": "POL-001",
+    "created_at": "",
+    "updated_at": "",
+
+    "time_zone": "",
+    "$time_zone_note": "IANA timezone for the business. E.g. 'America/Chicago'. All booking times are interpreted in this zone.",
+
+    "allow_same_day": true,
+    "$same_day_note": "If false, customers cannot book any appointment that starts today. Overrides min_notice_minutes for same-day blocking.",
+
+    "min_notice_minutes": 120,
+    "$min_notice_note": "Minimum lead time before an appointment can be booked online. 120 = customers must book at least 2 hours in advance. Set to 0 to allow last-minute bookings.",
+
+    "max_advance_days": 60,
+    "$max_advance_note": "How far out customers can book. 60 = up to 60 days from today. Prevents filling a calendar too far ahead.",
+
+    "buffer_before_minutes": 0,
+    "buffer_after_minutes": 0,
+    "$buffer_note": "Business default buffers. Applied to all services unless the service has its own buffer override values.",
+
+    "customer_cancellation_allowed": true,
+    "customer_reschedule_allowed": true,
+
+    "free_cancellation_cutoff_hours": 24,
+    "$cutoff_note": "Cancellations or reschedules made before this threshold are free. After this threshold, the late cancellation fee applies.",
+
+    "late_cancellation_fee_type": "none | fixed | percentage",
+    "late_cancellation_fee_amount": 0,
+    "$late_cancel_note": "For fixed: dollar amount. For percentage: percent of service price. Applied when customer cancels after free_cancellation_cutoff_hours.",
+
+    "no_show_fee_type": "none | fixed | percentage",
+    "no_show_fee_amount": 0,
+    "$no_show_note": "Fee applied when a customer does not show and did not cancel. Requires a payment method on file to charge automatically.",
+
+    "auto_confirm_mode": "instant | owner_must_approve",
+    "$auto_confirm_note": "instant: slot is confirmed immediately on submission. owner_must_approve: booking goes to pending status; owner must explicitly approve before customer receives confirmation.",
+
+    "auto_cancel_pending_after_minutes": 1440,
+    "$auto_cancel_note": "In owner_must_approve mode: if the owner takes no action within this many minutes, the pending booking is automatically declined and the customer is notified. 1440 = 24 hours. Set to 0 to disable auto-decline.",
+
+    "terms_markdown": "",
+    "$terms_note": "Cancellation policy and any other terms shown to the customer on the booking confirmation step. Displayed with a checkbox acknowledgment.",
+
+    "reminder_offsets_minutes": [-1440, -120],
+    "$reminder_note": "When to send appointment reminders relative to start_time. Negative = before. E.g. [-1440, -120] sends a reminder 24 hours before and 2 hours before.",
+
+    "followup_offset_minutes": 120,
+    "$followup_note": "When to send the post-appointment follow-up relative to start_time. Positive = after. E.g. 120 = 2 hours after the appointment end."
+  },
+
+  "customer_bookings": [
+    {
+      "booking_id": "BK-2026-001",
+      "created_at": "",
+      "updated_at": "",
+
+      "service_id": "",
+      "$service_id_note": "Links to booking_services[]. Used to determine duration, price, and buffer times.",
+
+      "staff_id": null,
+      "$staff_id_note": "ID from schedule.json field_workers[]. Null means customer selected 'any available' — system assigns automatically.",
+
+      "start_time": "",
+      "end_time": "",
+      "$time_note": "ISO 8601 datetime with timezone offset. E.g. '2026-03-15T14:00:00-06:00'. end_time = start_time + duration_minutes. Computed on booking submission.",
+
+      "time_zone": "",
+      "$tz_note": "Customer's local timezone. Store separately from start_time in case they booked from a different timezone than the business.",
+
+      "status": "pending | confirmed | declined | cancelled",
+      "$status_note": "pending=awaiting owner approval (owner_must_approve mode). confirmed=slot reserved and internal appointment created. declined=rejected by owner or auto-declined on timeout. cancelled=customer or owner cancelled after confirmation.",
+
+      "customer": {
+        "id": "",
+        "$id_note": "Links to crm.json contacts[] if the customer has an existing record. Created on first booking.",
+        "name": "",
+        "email": "",
+        "$email_note": "Required. Used for confirmation, reminder, and follow-up messages.",
+        "phone": "",
+        "$phone_note": "Used for SMS reminders if configured.",
+        "notes": "",
+        "$notes_note": "Customer-supplied notes at booking time. E.g. 'I have long hair', 'My dog is anxious around other dogs'. Shown to staff."
+      },
+
+      "pricing": {
+        "service_price": 0,
+        "currency": "USD",
+        "deposit_required": false,
+        "deposit_amount": 0,
+        "$deposit_note": "Deposit collected at booking time. If requires_deposit=true on the service, this must be paid before the booking is processed.",
+        "deposit_refundable": true,
+        "total_due_at_service": 0,
+        "$total_note": "Remaining balance owed at the appointment. service_price minus deposit_amount."
+      },
+
+      "channel": "web_widget | public_page | chat_ai | manual_internal",
+      "$channel_note": "How the booking was created. chat_ai=booked via AI conversation. manual_internal=owner/staff created this booking on behalf of the customer.",
+
+      "source": "",
+      "$source_note": "Marketing source or referrer. E.g. 'instagram_bio', 'google_business', 'email_campaign'. Used for booking attribution.",
+
+      "internal_appointment_id": "",
+      "$appointment_note": "ID of the corresponding record in schedule.json appointments[]. Set when booking is confirmed. Null for pending or declined bookings.",
+
+      "confirmation_token": "",
+      "$token_note": "Unique token included in cancellation and reschedule links sent to the customer. Validates that link is for this specific booking.",
+
+      "notes_internal": "",
+      "$internal_notes_note": "Owner or staff notes not visible to the customer.",
+      "tags": []
+    }
+  ],
+
+  "booking_notifications": [
+    {
+      "notification_id": "BKNOTIF-001",
+      "created_at": "",
+      "sent_at": "",
+
+      "booking_id": "",
+
+      "event_type": "booking_received_customer | booking_confirmed_customer | booking_declined_customer | booking_cancelled_customer | booking_received_owner | reminder_before_start | followup_after",
+      "$event_note": "booking_received_customer: sent immediately when a booking is submitted in owner_must_approve mode ('we got your request'). booking_confirmed_customer: sent when status changes to confirmed. booking_received_owner: alert to owner on new pending request. reminder_before_start: pre-appointment reminder. followup_after: post-appointment message.",
+
+      "channel": "email | sms",
+      "recipient_type": "customer | owner | staff",
+
+      "to": "",
+      "$to_note": "Resolved email address or phone number at send time. Derived from customer.email, customer.phone, or staff contact in schedule.json.",
+
+      "send_offset_minutes": null,
+      "$offset_note": "For reminders and followups: minutes relative to start_time. Negative = before appointment. Positive = after. Null for event-triggered notifications.",
+
+      "subject_template": "",
+      "$subject_note": "Email subject line. Use {{customer.name}}, {{service.name}}, {{start_time}}, {{business.name}} as placeholders.",
+
+      "body_template_markdown": "",
+      "$body_note": "Message body in markdown. Use same placeholders. For SMS: keep under 160 characters. For email: full confirmation details, policy reminder, and manage-booking link.",
+
+      "status": "pending | sent | failed",
+      "error": "",
+      "$error_note": "Error message if status=failed. E.g. 'SMS delivery failed: invalid phone number'. Owner alerted on failure."
+    }
+  ]
+}
