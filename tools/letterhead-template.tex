@@ -1,0 +1,42 @@
+% Company Letterhead — LaTeX header for pandoc/Eisvogel PDF output
+%
+% SETUP:
+%   1. Copy this file to %APPDATA%\pandoc\company-letterhead.tex
+%   2. Copy your logo PNG to %APPDATA%\pandoc\company-logo.png
+%   3. Edit the address block below with your company info
+%   4. Update the logo path below to match your actual username/path
+%   5. Run: bash tools/convert.sh md-to-letterhead-pdf input.md
+%
+% ADJUSTMENTS:
+%   Logo width:     Change 1.56in to taste
+%   Font size:      Change \fontsize{9}{11} — first number is pt size, second is line spacing
+%   Line spacing:   Change \arraystretch — 1.0 = normal, 0.85 = tighter, 1.2 = looser
+%   Text color:     Change gray}{0.35} — 0 = black, 1 = white, 0.35 = dark gray
+%   Top margin:     Controlled in convert.sh via geometry:top= setting
+%
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\definecolor{companygray}{gray}{0.35}
+\setlength{\headheight}{52pt}
+\AtBeginDocument{%
+  \pagestyle{fancy}%
+  \fancyhf{}%
+  \fancyhead[L]{%
+    \begin{minipage}[c]{\linewidth}%
+      \includegraphics[width=1.56in]{C:/Users/YOUR_USERNAME/AppData/Roaming/pandoc/company-logo.png}%
+    \end{minipage}%
+  }%
+  \fancyhead[R]{%
+    \renewcommand{\arraystretch}{1.0}%
+    \fontsize{9}{11}\selectfont\color{companygray}%
+    \begin{tabular}[c]{@{}l@{}}%
+      123 Your Street \\
+      Your City, ST 00000 \\
+      000.000.0000 \\
+      yourcompany.com%
+    \end{tabular}%
+  }%
+  \fancyfoot[C]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}

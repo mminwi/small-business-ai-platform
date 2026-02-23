@@ -238,3 +238,66 @@ lists, simple tables, hyperlinks.
 
 **What needs manual cleanup:** Complex tables with merged cells, text boxes, headers/footers,
 embedded Excel charts, revision tracking markup.
+
+---
+
+## Company Letterhead Setup
+
+Adds your logo and address to the header of every page when producing PDFs.
+Uses the `md-to-letterhead-pdf` command in `convert.sh`.
+
+### Step 1 — Copy the template
+
+```bash
+cp tools/letterhead-template.tex "$APPDATA/pandoc/company-letterhead.tex"
+```
+
+### Step 2 — Edit the template
+
+Open `%APPDATA%\pandoc\company-letterhead.tex` and update:
+- **Logo path** — change `YOUR_USERNAME` to your Windows username
+- **Address lines** — replace the placeholder address with your company info
+- **Logo filename** — rename `company-logo.png` to match your actual logo file
+
+### Step 3 — Copy your logo
+
+```bash
+cp /path/to/your-logo.png "$APPDATA/pandoc/company-logo.png"
+```
+
+### Step 4 — Update convert.sh
+
+In `tools/convert.sh`, find the `md_to_letterhead_pdf` function and update the two
+path variables to match your filenames:
+
+```bash
+local logo="/c/Users/$USERNAME/AppData/Roaming/pandoc/company-logo.png"
+local tex="/c/Users/$USERNAME/AppData/Roaming/pandoc/company-letterhead.tex"
+```
+
+### Step 5 — Test
+
+```bash
+bash tools/convert.sh md-to-letterhead-pdf your-document.md
+```
+
+### Tuning reference
+
+| Setting | Where | Effect |
+|---|---|---|
+| Logo width | `\includegraphics[width=X]` | Change `1.56in` to resize logo |
+| Top margin | `geometry:top=X` in convert.sh | Distance from page top to header |
+| Font size | `\fontsize{9}{11}` | Address text size (pt) |
+| Line spacing | `\arraystretch{1.0}` | Row spacing: 0.85 = tighter, 1.2 = looser |
+| Text color | `\definecolor{...}{gray}{0.35}` | 0 = black, 1 = white |
+
+### Notes
+
+- **Use `lualatex`** as the PDF engine (already set in convert.sh). Do not switch to
+  `pdflatex` — it fails on Unicode characters (≥, ©, em-dashes, etc.) that commonly
+  appear in business documents.
+- **Must be set up on each PC separately.** The logo and .tex file live in
+  `%APPDATA%\pandoc\` which is per-user and per-machine.
+- **Git Bash backslash behavior:** When writing `.tex` files from bash scripts,
+  `\\` in single-quoted strings or quoted heredocs outputs only `\`. Use `\\\\` to
+  get `\\` in the output file (needed for LaTeX table row separators).

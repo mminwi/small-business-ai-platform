@@ -67,6 +67,36 @@ md_to_pdf() {
   echo "Done: $output"
 }
 
+md_to_letterhead_pdf() {
+  local input="$1"
+  local output="${2:-${input%.md}.pdf}"
+  local logo="/c/Users/$USERNAME/AppData/Roaming/pandoc/credo-logo.png"
+  local tex="/c/Users/$USERNAME/AppData/Roaming/pandoc/credo-letterhead.tex"
+  check_tools pdf
+  if [ ! -f "$logo" ]; then
+    echo "ERROR: Logo not found at $logo"
+    echo "       Copy credo-logo.png to %APPDATA%\\pandoc\\"
+    exit 1
+  fi
+  if [ ! -f "$tex" ]; then
+    echo "ERROR: Letterhead template not found at $tex"
+    echo "       See tools/pandoc-setup.md for setup instructions."
+    exit 1
+  fi
+  echo "Converting with Credo letterhead: $input → $output"
+  "$PANDOC" "$input" \
+    --template eisvogel \
+    --pdf-engine=lualatex \
+    --include-in-header="$tex" \
+    -o "$output" \
+    -V colorlinks=true \
+    -V linkcolor=blue \
+    -V "geometry:top=1.0in,left=1in,right=1in,bottom=1in" \
+    -V fontsize=11pt \
+    -V disable-header-and-footer=true
+  echo "Done: $output"
+}
+
 md_to_docx() {
   local input="$1"
   local output="${2:-${input%.md}.docx}"
@@ -178,6 +208,10 @@ case "$COMMAND" in
     if [ -z "$INPUT" ]; then echo "Usage: convert.sh md-to-pdf input.md [output.pdf]"; exit 1; fi
     md_to_pdf "$INPUT" "$OUTPUT"
     ;;
+  md-to-letterhead-pdf)
+    if [ -z "$INPUT" ]; then echo "Usage: convert.sh md-to-letterhead-pdf input.md [output.pdf]"; exit 1; fi
+    md_to_letterhead_pdf "$INPUT" "$OUTPUT"
+    ;;
   md-to-docx)
     if [ -z "$INPUT" ]; then echo "Usage: convert.sh md-to-docx input.md [output.docx]"; exit 1; fi
     md_to_docx "$INPUT" "$OUTPUT"
@@ -224,8 +258,9 @@ case "$COMMAND" in
     echo "  bash tools/convert.sh any-to-md   input.xyz    [output.md]"
     echo ""
     echo "  From Markdown (produce deliverables):"
-    echo "  bash tools/convert.sh md-to-pdf   input.md     [output.pdf]"
-    echo "  bash tools/convert.sh md-to-docx  input.md     [output.docx]"
+    echo "  bash tools/convert.sh md-to-pdf              input.md     [output.pdf]"
+    echo "  bash tools/convert.sh md-to-letterhead-pdf  input.md     [output.pdf]"
+    echo "  bash tools/convert.sh md-to-docx            input.md     [output.docx]"
     echo ""
     echo "See tools/pandoc-setup.md for full format list and install instructions."
     echo ""
