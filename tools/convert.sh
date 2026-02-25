@@ -121,8 +121,8 @@ md_to_qms_pdf() {
     -o "$output" \
     -V colorlinks=true \
     -V linkcolor=blue \
-    -V "geometry:top=1.0in,left=1in,right=1in,bottom=1in" \
-    -V fontsize=11pt \
+    -V "geometry:top=1.0in,left=1in,right=1in,bottom=1.15in" \
+    -V fontsize=10pt \
     -V disable-header-and-footer=true
   echo "Done: $output"
 }
